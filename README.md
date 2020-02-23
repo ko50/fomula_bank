@@ -1,4 +1,4 @@
-# function bank in flutter
+# formula bank in flutter
 
 My First Flutter project.
 
