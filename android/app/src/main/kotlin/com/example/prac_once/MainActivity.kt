@@ -1,4 +1,4 @@
-package com.example.prac_once
+package com.example.formula_bank
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
