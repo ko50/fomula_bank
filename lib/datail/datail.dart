@@ -3,10 +3,10 @@ import '../home/home.dart';
 
 Map formulaListMap = {"Math": [], "Physics": [], "Chemistory": []};
 String formulaName;
-Map tagMap;
-List tags;
-Map componentsMap;
-Map components;
+Map tagMap = {};
+List tags = [];
+Map componentsMap = {};
+Map components = {};
 String body;
 String propety;
 bool paint;
@@ -67,7 +67,7 @@ class _DatailState extends State<Datail> {
   // ListView
   Widget _buildListView() {
     // 式が一つもなかったら式を追加するようメッセージを表示
-    if(_formulaList==[]){
+    if(_formulaList.length==0){
       return Expanded(
         child: Container(
           child: Center(
@@ -88,18 +88,17 @@ class _DatailState extends State<Datail> {
         child: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
             _labelText = _formulaList[index];
-            _labelTags = componentsMap[_labelText] ??= ["null"];
+            _labelTags = tagMap[_labelText] ??= ["null"];
             _labelTag = _labelTags.join("/");
             return GestureDetector(
               onTap: () {
-                setState(() {
-                  formulaName = _formulaList[index];
-                  tags = tagMap[formulaName] ??= ["null"]; // ここはいらないかも
-                  body = componentsMap[formulaName]["body"] ??= "null";
-                  propety = componentsMap[formulaName]["propety"] ??= "null";
-                  paint = componentsMap[formulaName]["paint"];
-                });
-                Navigator.of(context).pushNamed("/datail/preview");
+                formulaName = _formulaList[index];
+                tags = tagMap[formulaName] ??= ["null"]; // ここはいらないかも
+                components = componentsMap[formulaName];
+                body = components["body"] ??= "null";
+                propety = components["propety"] ??= "null";
+                paint = components["paint"];
+                Navigator.of(context).pushNamed("/preview");
               },
               child: Container(
                 height: 70,
@@ -136,7 +135,7 @@ class _DatailState extends State<Datail> {
                                 Container(
                                   width: 90,
                                   child: Text(
-                                    _labelTag ??= "null",
+                                    _labelTag,
                                     style: TextStyle(fontSize: 15,color: Colors.grey),
                                   ),
                                 ),
@@ -154,6 +153,7 @@ class _DatailState extends State<Datail> {
                           formulaName = _formulaList[index];
                           _addingformulacontroller = TextEditingController(text: formulaName);
                           _editingTagcontroller = TextEditingController(text: _labelTag ??= "null");
+                          components = componentsMap[formulaName];
                           _originalBody = components["body"];
                           _originalPropety = components["propety"];
                           _originalPaint = components["paint"];

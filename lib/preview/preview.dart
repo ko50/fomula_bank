@@ -8,27 +8,26 @@ class Preview extends StatefulWidget {
 }
 class _PreviewState extends State<Preview> { // TODO クラス分割
 
-  final String formulaName;
-  _PreviewState({this.formulaName}): super();
 
   var _objectSavecontroller = TextEditingController();
   var _propetySavecontroller = TextEditingController();
 
   // こいつらは入力待機かプレビュー表示か切り替えてる
-  bool _waitingInputObject = false;
-  bool _waitingInputPropety = false;
+  static bool _waitingInputBody = false;
+  static bool _waitingInputPropety = false;
+  List<bool> _stateList = [_waitingInputBody, _waitingInputPropety];
 
   // 右側にあるボタン二つを設定
-  MaterialButton _buildButton(bool state, TextEditingController controller, String target) {
+  MaterialButton _buildButton(int index , TextEditingController controller, String target) {
     // 入力待機時
-    if(state) {
+    if(_stateList[index]) {
       return MaterialButton(
         height: 40,
         minWidth: 40,
-        child: Icon(Icons.settings),
+        child: Icon(Icons.save),
         onPressed: () {setState(() {
-          controller = TextEditingController(text: componentsMap[formulaName][target]); // 現在の式を保持
-          state = !state; // ボタン押したら切り替え
+          components[target] = controller.text;
+          _stateList[index] = false; // ボタン押したら切り替え
         });},
       );
     }
@@ -37,31 +36,19 @@ class _PreviewState extends State<Preview> { // TODO クラス分割
       return MaterialButton(
         height: 40,
         minWidth: 40,
-        child: Icon(Icons.save),
+        child: Icon(Icons.settings),
         onPressed: () {setState(() {
-          componentsMap[formulaName][target] = controller.text;
-          state = !state; // ボタン押したら切り替え
+          controller = TextEditingController(text: components[target]); // 現在の式を保持
+          _stateList[index] = true; // ボタン押したら切り替え
         });},
       );
     }
   }
 
   // 左側のスペースの設定
-  Widget _buildField(bool state, double fontSize, String labelText, TextEditingController controller, int maxline, String target) {
+  Widget _buildField(int index, double fontSize, String labelText, TextEditingController controller, int maxline, String target) {
     // 入力時
-    if(state){
-      return Expanded(
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            componentsMap[formulaName][target] ??= "value = null",
-            style: TextStyle(fontSize: fontSize),
-          ),
-        ),
-      );
-    }
-    // プレビュー表示時
-    else{
+    if(_stateList[index]){
       return Expanded(
         child: TextField(
           enabled: true,
@@ -72,11 +59,23 @@ class _PreviewState extends State<Preview> { // TODO クラス分割
         ),
       );
     }
+    // プレビュー表示時
+    else{
+      return Expanded(
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            components[target] ??= "value = null",
+            style: TextStyle(fontSize: fontSize),
+          ),
+        ),
+      );
+    }
   }
 
   // 引数長くね？誰だよこんなの書いたの
   // 全体の設定
-  Widget _bodyChild(int flex, double fontSize, bool state, String labelText, TextEditingController controller, int maxline, String target) {
+  Widget _bodyChild(int flex, double fontSize, int index, String labelText, TextEditingController controller, int maxline, String target) {
     return Expanded(
       flex: flex,
       child: Container(
@@ -91,8 +90,8 @@ class _PreviewState extends State<Preview> { // TODO クラス分割
         ),
         child: Row(
           children: <Widget>[
-            _buildField(state, fontSize, labelText, controller, maxline, target),
-            _buildButton(state, controller, target),
+            _buildField(index, fontSize, labelText, controller, maxline, target),
+            _buildButton(index, controller, target),
           ],
         ),
       ),
@@ -107,8 +106,8 @@ class _PreviewState extends State<Preview> { // TODO クラス分割
       ),
       body: Column(
         children: <Widget>[
-          _bodyChild(1, 25, _waitingInputObject, "Formula Body", _objectSavecontroller, 2, "body"),
-          _bodyChild(5, 20, _waitingInputPropety, "Formula Propety", _propetySavecontroller, null, "propety"),
+          _bodyChild(1, 25, 0, "Formula Body", _objectSavecontroller, 2, "body"),
+          _bodyChild(5, 20, 1, "Formula Propety", _propetySavecontroller, null, "propety"),
         ],
       ),
     );

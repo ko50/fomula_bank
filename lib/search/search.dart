@@ -8,17 +8,18 @@ class Search extends StatefulWidget {
 }
 class _SearchState extends State<Search> {
   var _searchBarcontroller = TextEditingController();
-  int _cache = 0;
   List _searchKeys;
-  List _results;
-  List _tagResults;
-  List _mothersKeys;
-  List _mothersTags;
+  List _results = [];
   String _labelText;
   String _labelTag;
   List _labelTags= [];
 
-  void _search(String subj, String item) {if(formulaListMap[subj].contains(item)){if(_results.contains(item)==false){_results.add(item);}}}
+  void _search(String subj, String key) {
+    List formulalist = formulaListMap[subj]??=[""];
+    if(formulalist.contains(key)){
+      _results.add(key);
+    }
+  }
   Container _searchBar() {
     return Container(
       height: 62,
@@ -38,37 +39,19 @@ class _SearchState extends State<Search> {
             icon: Icon(Icons.search),
             onPressed: () {
               setState(() {
-                _results = <String>[];
+                _results = [];
                 _searchKeys = _searchBarcontroller.text.split(" ");
-                _tagResults = <String>[];
-                _mothersKeys = tagMap.keys.toList();
-                _mothersTags = tagMap.values.toList();
               });
-              for(int i=0; i<_searchKeys.length; i++){
-                _search("Math", _searchKeys[i]);     // 式名検索 数学
-                _search("Physics", _searchKeys[i]);  // 式名検索 物理
-                _search("Chemical", _searchKeys[i]); // 式名検索 化学
-                // タグ検索
-                for(int n=0; n<tagMap.values.length; n++){
-                  for(int a=0; a<tagMap.values.toList()[n].length; a++){
-                    if(tagMap.values.toList()[n][a].contains(_searchKeys[i])){
-                      _tagResults.add(_searchKeys[i]);
-                    }
+              _searchKeys.forEach((searchKey) {
+                tagMap.values.toList().asMap().forEach((index, enemyTag){
+                  if(enemyTag.contains(searchKey)){
+                    _results.add(tagMap.keys.toList()[index]);
                   }
-                }
-              }
-              for(int j=0; j<_tagResults.length; j++){
-                for(int t=0; t<tagMap.values.length; t++){
-                  _cache = 0;
-                  if(_mothersTags[t].contains(_tagResults[j])){
-                    _cache = _mothersTags.indexOf(_mothersTags[t]);
-                    if (_cache == -1){_cache = 0;}
-                    _mothersTags.remove(_mothersTags[_cache]);
-                    _results.add(_mothersKeys[_cache]);
-                    _mothersKeys.remove(_mothersKeys[_cache]);
-                  }
-                }
-              }
+                });
+                _search("Math", searchKey??="");     // 式名検索 数学
+                _search("Physics", searchKey??="");  // 式名検索 物理
+                _search("Chemical", searchKey??=""); // 式名検索 化学
+              });
             }
           ),
         ],
@@ -137,7 +120,7 @@ class _SearchState extends State<Search> {
                   propety = componentsMap[formulaName]["propety"];
                   paint = componentsMap[formulaName]["paint"];
                 });
-                Navigator.of(context).pushNamed("/search/preview");
+                Navigator.of(context).pushNamed("/preview");
               },
               child: Container(
                 height: 70,
