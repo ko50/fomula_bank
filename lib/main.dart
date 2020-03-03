@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; // TODO スペルミスの修正(fomula => formula)
+import 'package:flutter/material.dart';
 import 'home/home.dart';
 import 'datail/datail.dart';
 import 'search/search.dart';

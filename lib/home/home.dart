@@ -1,4 +1,4 @@
-// 最初の画面   /datailまたは/searchに飛ぶ
+// 最初の画面
 import 'package:flutter/material.dart';
 
 String subject;
@@ -6,24 +6,14 @@ String datailtitle;
 
 class Home extends StatelessWidget {
 
-  Widget _titleContainer(String text) { // 画面遷移ボタンのタイトル分け
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey),),
-      ),
-      child: Center(child: Text(text, style: TextStyle(fontSize: 30),),),
-    );
-  }
-
-  Widget _buildButton(String labels, context) { // 画面遷移ボタン
+  Widget _buildButton(String labels, double width, context) { // 画面遷移ボタン
     return Container(
       padding: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))
       ),
       height: 50,
-      width: 160,
+      width: width,
       child: MaterialButton(
         child: Text(
           labels,
@@ -50,29 +40,23 @@ class Home extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
-            Container(
-              height: 250, // TODO デバイス依存の設定
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey),),
+            // 教科選択
+            Column(
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey),),
+                  ),
+                  child: Center(child: Text("Select Subject", style: TextStyle(fontSize: 26),),),
                 ),
-              child: Column(
-                children: <Widget>[
-                  _titleContainer("Select Subject"),
-                  _buildButton("Math", context),
-                  _buildButton("Physics", context),
-                  _buildButton("Chemical", context),
-                ],
-              ),
+                _buildButton("Math", 140, context),
+                _buildButton("Physics", 140, context),
+                _buildButton("Chemical", 140, context),
+              ],
             ),
-            Container(
-              height: 300,
-              child: Column(
-                children: <Widget>[
-                  _titleContainer("Others"),
-                  _buildButton("Search", context),
-                ],
-              ),
-            ),
+            // 検索
+            _buildButton("Search", 160, context),
           ],
         ),
       ),
