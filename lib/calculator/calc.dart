@@ -1,12 +1,44 @@
 import 'package:flutter/material.dart';
-import '../tools/tool.dart';
 
-class Calculator extends StatefulWidget {
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
   @override
-  _CalculatorState createState() => _CalculatorState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "CalcApp",
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Home(),
+    );
+  }
 }
-class _CalculatorState extends State<Calculator> {
-  
+
+// デバイスの横の長さ取得
+double getWidth(context) {
+  final Size size = MediaQuery.of(context).size;
+  return size.width;
+}
+
+// デバイスの縦の長さ取得
+double getHeight(context) {
+  final Size size = MediaQuery.of(context).size;
+  return size.height;
+}
+
+// Container下部の線引き
+BoxDecoration bottomBorder() => BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey),));
+
+// 右
+BoxDecoration rightBorder() => BoxDecoration(border: Border(right: BorderSide(width: 1.0, color: Colors.grey),));
+
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+class _HomeState extends State<Home> {
 
   // カーソルから見てどっちか
   List _formula_left = [""];
@@ -14,7 +46,7 @@ class _CalculatorState extends State<Calculator> {
 
   String _labelFormula = "";
   String _result = "0.0";
-  List _signs = ["+", "-", "*", "/", "^", "cos", "sin", "tan", "C", "P", "√", "log(",];
+  List _signs = ["+", "-", "*", "/", "^", "cos", "sin", "tan", "C", "P", "√", "log(", "(", ")",];
 
   Align _labelMain(String label, double fontSize) {
     return Align(
@@ -28,7 +60,7 @@ class _CalculatorState extends State<Calculator> {
   Widget _switchLabel(String label, double fontSize) {
     if(label==_labelFormula){
       return _labelMain(label, fontSize);
-    }else if(label==_result){
+    }else{
       return MaterialButton(
         child: _labelMain(label, fontSize),
         onPressed: () {
@@ -101,39 +133,67 @@ class _CalculatorState extends State<Calculator> {
   }
 
   void calculation() {
-    final List formula = _formula_left.sublist(0, _formula_left.length) + _formula_right;
-    double leftNum = 0;
-    List priority;
-    String waitingSign;
-
-/*
-    formula.forEach((element){
-      if(element is num){
-        if(waitingSign==null){
-          victim = element;
-        }else{
-          // ここ、ウンコードだな
-          switch(waitingSign){
-            case "+":
-              leftNum += victim + element;
-              break;
-            case "-":
-              leftNum += victim - element;
-              break;
-            case "/":
-              leftNum += victim / element;
-              break;
-            case "*":
-              leftNum += victim + element;
-              break;
-            
-          }
-          waitingSign = null;
+    List formula = _formula_left + _formula_right.sublist(1);
+    int index;
+    num number;
+    List numbers;
+    List signs;
+    List priority = [];
+    num result;
+    String sign;
+    // 計算の準備
+    do{
+      do{
+        number += formula[index];
+        formula.remove(formula[index]);
+      }while(int.tryParse(formula[index])!=null);
+      numbers.add(number);
+      if(_signs.contains(formula[index])){
+        signs.add(formula[index]);
+        if(_signs.contains(formula[index+1])){
+          // TODO アラートダイアログ定期
+          formula = [];
         }
-      }else if(_signs.contains(element)){waitingSign = element;}
-    });
-*/
-    setState(() {_result = leftNum.toString();});
+        formula.remove(formula[index]);
+      }
+      index += 1;
+    }while(formula!=[]);
+    // 優先順位つける  ^ → () → *, /
+    index = 0;
+    do{
+      index = signs.indexOf("^");
+      priority.add(["^", numbers[index]]);
+      numbers.removeAt(index);
+      signs.remove("^");
+    }while(signs.contains("^"));
+    int endIndex;
+    do{
+      index = numbers.indexOf("(");
+      endIndex = numbers.indexOf(")");
+      number = num.parse(numbers.sublist(index, endIndex).join());
+      priority.add(["()", number]);
+      numbers.remove("(");
+      numbers.remove(number);
+      numbers.remove(")");
+    }while(signs.contains("(") || signs.contains(")"));
+    do{
+      sign = signs.firstWhere((_sign) => _sign=="*" || _sign=="/");
+      if(sign=="*"){
+        index = signs.indexOf("*");
+        priority.add(["*", numbers[index]]);
+        numbers.remove("*");
+        signs.removeAt(index);
+      }else if(sign=="/"){
+        index = signs.indexOf("/");
+        priority.add(["/", numbers[index]]);
+        numbers.remove("/");
+        signs.removeAt(index);
+      }else{print("どうして");}
+    }while(signs.contains("*") || signs.contains("/"));
+    // 本体
+
+
+    setState(() {_result = result.toString();});
   }
 
   Widget _inputButton(var child, {double height}) {
