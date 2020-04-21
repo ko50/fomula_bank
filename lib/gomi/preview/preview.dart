@@ -102,12 +102,12 @@ class _PreviewState extends State<Preview> { // TODO クラス分割
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(formulaName),
+        title: Text(fomulaName),
       ),
       body: Column(
         children: <Widget>[
-          _bodyChild(1, 25, 0, "Formula Body", _objectSavecontroller, 2, "body"),
-          _bodyChild(5, 20, 1, "Formula Propety", _propetySavecontroller, null, "propety"),
+          _bodyChild(1, 25, 0, "fomula Body", _objectSavecontroller, 2, "body"),
+          _bodyChild(5, 20, 1, "fomula Propety", _propetySavecontroller, null, "propety"),
         ],
       ),
     );

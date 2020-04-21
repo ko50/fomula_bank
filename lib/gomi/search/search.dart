@@ -15,8 +15,8 @@ class _SearchState extends State<Search> {
   List _labelTags= [];
 
   void _search(String subj, String key) {
-    List formulalist = formulaListMap[subj]??=[""];
-    if(formulalist.contains(key)){
+    List fomulalist = fomulaListMap[subj]??=[""];
+    if(fomulalist.contains(key)){
       _results.add(key);
     }
   }
@@ -29,7 +29,7 @@ class _SearchState extends State<Search> {
             child: TextField(
               enabled: true,
               decoration: InputDecoration(
-                labelText: "Search formula...",
+                labelText: "Search fomula...",
                 hintText: "(separate with space)",
               ),
               controller: _searchBarcontroller,
@@ -113,12 +113,12 @@ class _SearchState extends State<Search> {
             return GestureDetector(
               onTap: () {
                 setState(() {
-                  formulaName = _results[index];
-                  tags = tagMap[formulaName];
+                  fomulaName = _results[index];
+                  tags = tagMap[fomulaName];
                   tags = tags ??= ["null"];
-                  body = componentsMap[formulaName]["body"];
-                  propety = componentsMap[formulaName]["propety"];
-                  paint = componentsMap[formulaName]["paint"];
+                  body = componentsMap[fomulaName]["body"];
+                  propety = componentsMap[fomulaName]["propety"];
+                  paint = componentsMap[fomulaName]["paint"];
                 });
                 Navigator.of(context).pushNamed("/preview");
               },

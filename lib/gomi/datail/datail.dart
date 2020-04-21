@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart'; // TODO クラスを、分割しろ
 import '../home/home.dart';
+import '../preview/preview.dart';
 
-Map formulaListMap = {"Math": [], "Physics": [], "Chemistory": []};
-String formulaName;
+Map fomulaListMap = {"Math": [], "Physics": [], "Chemistory": []};
+String fomulaName;
 Map tagMap = {};
 List tags = [];
 Map componentsMap = {};
@@ -16,7 +17,7 @@ class Datail extends StatefulWidget {
   _DatailState createState() => _DatailState();
 }
 class _DatailState extends State<Datail> {
-  var _addingformulacontroller = TextEditingController();
+  var _addingfomulacontroller = TextEditingController();
   var _editingTagcontroller= TextEditingController();
 
   // ListViewを構築する要素
@@ -25,7 +26,7 @@ class _DatailState extends State<Datail> {
   List _labelTags;
   String _labelTag;
   String _textFieldState = "add";
-  List _formulaList = formulaListMap[subject];
+  List _fomulaList = fomulaListMap[subject];
 
   // 式名とタグを編集するときに値を避難させる
   String _originalBody;
@@ -67,12 +68,12 @@ class _DatailState extends State<Datail> {
   // ListView
   Widget _buildListView() {
     // 式が一つもなかったら式を追加するようメッセージを表示
-    if(_formulaList.length==0){
+    if(_fomulaList.length==0){
       return Expanded(
         child: Container(
           child: Center(
             child: Text(
-              "Please Add Some Function",
+              "Please Add Some fomula",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.grey,
@@ -87,18 +88,20 @@ class _DatailState extends State<Datail> {
       return Expanded(
         child: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
-            _labelText = _formulaList[index];
+            _labelText = _fomulaList[index];
             _labelTags = tagMap[_labelText] ??= ["null"];
             _labelTag = _labelTags.join("/");
             return GestureDetector(
               onTap: () {
-                formulaName = _formulaList[index];
-                tags = tagMap[formulaName] ??= ["null"]; // ここはいらないかも
-                components = componentsMap[formulaName];
+                fomulaName = _fomulaList[index];
+                tags = tagMap[fomulaName] ??= ["null"]; // ここはいらないかも
+                components = componentsMap[fomulaName];
                 body = components["body"] ??= "null";
                 propety = components["propety"] ??= "null";
                 paint = components["paint"];
-                Navigator.of(context).pushNamed("/preview");
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => Preview())
+                );
               },
               child: Container(
                 height: 70,
@@ -145,15 +148,15 @@ class _DatailState extends State<Datail> {
                         ],
                       ),
                     ),
-                    starIcon(index, _formulaList[index]),
+                    starIcon(index, _fomulaList[index]),
                     MaterialButton(
                       child: Icon(Icons.settings),
                       onPressed: () {
                         setState(() {
-                          formulaName = _formulaList[index];
-                          _addingformulacontroller = TextEditingController(text: formulaName);
+                          fomulaName = _fomulaList[index];
+                          _addingfomulacontroller = TextEditingController(text: fomulaName);
                           _editingTagcontroller = TextEditingController(text: _labelTag ??= "null");
-                          components = componentsMap[formulaName];
+                          components = componentsMap[fomulaName];
                           _originalBody = components["body"];
                           _originalPropety = components["propety"];
                           _originalPaint = components["paint"];
@@ -167,7 +170,7 @@ class _DatailState extends State<Datail> {
               ),
             );
           },
-          itemCount: _formulaList.length,
+          itemCount: _fomulaList.length,
         ),
       );
     }
@@ -181,10 +184,10 @@ class _DatailState extends State<Datail> {
         child: TextField(
           enabled: true,
           decoration: InputDecoration(
-            labelText: "add a formula",
+            labelText: "add a fomula",
             hintText: "(only space, remove)"
           ),
-          controller: _addingformulacontroller,
+          controller: _addingfomulacontroller,
         ),
       );
     }
@@ -199,10 +202,10 @@ class _DatailState extends State<Datail> {
               child: TextField(
                 enabled: true,
                 decoration: InputDecoration(
-                  labelText: "add a formula",
+                  labelText: "add a fomula",
                   hintText: "(only space, remove)",
                 ),
-                controller: _addingformulacontroller,
+                controller: _addingfomulacontroller,
               ),
             ),
             // タグ編集
@@ -233,14 +236,14 @@ class _DatailState extends State<Datail> {
         onPressed: () {
           // 式の追加
           setState(() {
-            if(_addingformulacontroller.text.trim()!=""){
-              _formulaList.add(_addingformulacontroller.text);
-              tagMap.addAll({_addingformulacontroller.text: []});
+            if(_addingfomulacontroller.text.trim()!=""){
+              _fomulaList.add(_addingfomulacontroller.text);
+              tagMap.addAll({_addingfomulacontroller.text: []});
               body = "";
               propety = "";
               paint = false;
-              _addComponents(_addingformulacontroller.text);
-              _addingformulacontroller.text = "";
+              _addComponents(_addingfomulacontroller.text);
+              _addingfomulacontroller.text = "";
             }
           });
         },
@@ -254,27 +257,27 @@ class _DatailState extends State<Datail> {
         child: Icon(Icons.save),
         onPressed: () {
           setState(() {
-            tagMap.remove(formulaName);
-            componentsMap.remove(formulaName);
-            formulaName = _addingformulacontroller.text;
-            if(formulaName.trim()!=""){
+            tagMap.remove(fomulaName);
+            componentsMap.remove(fomulaName);
+            fomulaName = _addingfomulacontroller.text;
+            if(fomulaName.trim()!=""){
               body = _originalBody;
               propety = _originalPropety;
               paint = _originalPaint;
-              _addComponents(formulaName);
-              tagMap.addAll({formulaName: _editingTagcontroller.text.split("/")});
-              tags = tagMap[formulaName] ??= ["null"];
-              _formulaList[index] = formulaName;
+              _addComponents(fomulaName);
+              tagMap.addAll({fomulaName: _editingTagcontroller.text.split("/")});
+              tags = tagMap[fomulaName] ??= ["null"];
+              _fomulaList[index] = fomulaName;
             }
             else{
               if(paint==true){
-                _formulaList[index] = _originalBody ??= "null";
-                tagMap.addAll({formulaName: _editingTagcontroller.text.split("/")});
-                tags = tagMap[formulaName] ??= ["null"];
+                _fomulaList[index] = _originalBody ??= "null";
+                tagMap.addAll({fomulaName: _editingTagcontroller.text.split("/")});
+                tags = tagMap[fomulaName] ??= ["null"];
               }
-              else{_formulaList.remove(formulaName);}
+              else{_fomulaList.remove(fomulaName);}
             }
-            _addingformulacontroller.text = "";
+            _addingfomulacontroller.text = "";
             _editingTagcontroller.text = "";
             _textFieldState = "add";
           });

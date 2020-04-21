@@ -11,6 +11,3 @@ double getHeight(context) {
   final Size size = MediaQuery.of(context).size;
   return size.height;
 }
-
-// Container下部の線引き
-BoxDecoration bottomBorder() => BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey),));
