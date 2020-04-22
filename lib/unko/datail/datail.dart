@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; // TODO クラスを、分割しろ
+import 'package:flutter/material.dart';
 import '../home/home.dart';
 import '../preview/preview.dart';
 

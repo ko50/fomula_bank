@@ -41,8 +41,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   // カーソルから見てどっちか
-  List _fomula_left = [""];
-  List _fomula_right = ["|"]; // "|"のindexは常に0であらなければならない
+  List _leftFomula = [""];
+  List _rightFomula = ["|"]; // "|"のindexは常に0であらなければならない
 
   String _labelfomula = "";
   String _result = "0.0";
@@ -65,8 +65,8 @@ class _HomeState extends State<Home> {
         child: _labelMain(label, fontSize),
         onPressed: () {
           setState(() {
-            _fomula_left.add(label);
-            _labelfomula = _fomula_left.join() + _fomula_right.join();
+            _leftFomula.add(label);
+            _labelfomula = _leftFomula.join() + _rightFomula.join();
           });
         },
       );
@@ -101,31 +101,31 @@ class _HomeState extends State<Home> {
     String target;
     if(child is Icon){
       setState(() {
-        _fomula_left.removeLast();
+        _leftFomula.removeLast();
       });
     }else if(child is int){
       setState(() {
-        _fomula_left.add(child.toString());
+        _leftFomula.add(child.toString());
       });
-    }else if(_signs.contains(child) || child=="." || child=="(" || child==")" /* && _signs.contains(_fomula_left[_fomula_left.length-1])*/){
+    }else if(_signs.contains(child) || child=="." || child=="(" || child==")" /* && _signs.contains(_leftFomula[_leftFomula.length-1])*/){
       setState(() {
-        _fomula_left.add(child);
+        _leftFomula.add(child);
       });
     }else if(child=="="){
       calculation();
     }else if(child=="→"){
-      if(_fomula_right.length!=0){
-        target = _fomula_right[1];
+      if(_rightFomula.length!=0){
+        target = _rightFomula[1];
         setState(() {
-          _fomula_left.add(target);
-          _fomula_right.remove(target);
+          _leftFomula.add(target);
+          _rightFomula.remove(target);
         });
       }
     }else if(child=="←"){
-      target = _fomula_left.last;
+      target = _leftFomula.last;
       setState(() {
-        _fomula_left.removeLast();
-        _fomula_right.insert(1, target);
+        _leftFomula.removeLast();
+        _rightFomula.insert(1, target);
       });
     }else{
       // TODO アラートダイアログを表示する関数 (符号を連続して入力しようとしたカス宛て)
@@ -133,7 +133,7 @@ class _HomeState extends State<Home> {
   }
 
   void calculation() {
-    List fomula = _fomula_left + _fomula_right.sublist(1);
+    List fomula = _leftFomula + _rightFomula.sublist(1);
     int index;
     num number;
     List numbers;
@@ -224,7 +224,7 @@ class _HomeState extends State<Home> {
         child: label,
         onPressed: () {
           _inputed(child);
-          setState(() {_labelfomula = _fomula_left.join() + _fomula_right.join();});
+          setState(() {_labelfomula = _leftFomula.join() + _rightFomula.join();});
         },
       );
     }
@@ -252,7 +252,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {_labelfomula = _fomula_left.join() + _fomula_right.join();});
+    setState(() {_labelfomula = _leftFomula.join() + _rightFomula.join();});
     return Scaffold(
       appBar: AppBar(
         title: Text("Calculator"),

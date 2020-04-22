@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'config.dart';
+import '../models/config.dart';
 
 class Settings extends StatefulWidget {
   @override

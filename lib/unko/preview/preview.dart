@@ -6,7 +6,7 @@ class Preview extends StatefulWidget {
   @override
   _PreviewState createState() => _PreviewState();
 }
-class _PreviewState extends State<Preview> { // TODO クラス分割
+class _PreviewState extends State<Preview> {
 
 
   var _objectSavecontroller = TextEditingController();

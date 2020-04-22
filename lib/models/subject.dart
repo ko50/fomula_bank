@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert';
 
-import '../fomula/fomula.dart';
+import '../models/fomula.dart';
 
 class Subject {
   String name;

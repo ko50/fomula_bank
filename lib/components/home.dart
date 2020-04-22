@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './subject.dart';
+import '../models/subject.dart';
 import '../tools/tool.dart';
 
 class Home extends StatefulWidget {

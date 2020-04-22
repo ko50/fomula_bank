@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../subject/home.dart';
-import '../settings/settings.dart';
-
-ListTile _drawerTile(var context, String title, Widget targetPage, icon) {
+ListTile _drawerTile(var context, String title, String pageRaute, icon) {
   return ListTile(
     title: Row(
       children: <Widget>[
@@ -20,10 +17,9 @@ ListTile _drawerTile(var context, String title, Widget targetPage, icon) {
       ],
     ),
     onTap: () {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => targetPage
-        ),
+      Navigator.pushNamed(
+        context,
+        pageRaute,
       );
     },
   );
@@ -42,8 +38,8 @@ Drawer drawer(var context) {
             color: Theme.of(context).primaryColor,
           ),
         ),
-        _drawerTile(context, "Home", Home(), Icons.home),
-        _drawerTile(context, "Settings", Settings(), Icons.settings),
+        _drawerTile(context, "Home", "/home", Icons.home),
+        _drawerTile(context, "Settings", "/settings", Icons.settings),
       ],
     ),
   );
