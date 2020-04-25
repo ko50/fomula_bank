@@ -1,13 +1,37 @@
-import 'package:flutter/material.dart';
+import './_exporter.dart';
+import '../models/_exporter.dart';
 
-class Datail extends StatefulWidget {
+class Preview extends StatefulWidget {
+  final Fomula fomula;
+  final Subject subject;
+
+  Preview({this.fomula, this.subject});
+
   @override
-  _DatailState createState() => _DatailState();
+  _PreviewState createState() => _PreviewState(fomula, subject);
 }
 
-class _DatailState extends State<Datail> {
+class _PreviewState extends State<Preview> {
+  Fomula fomula;
+  Subject pearentSubject;
+
+  _PreviewState(this.fomula, this.pearentSubject);
+
   @override
   Widget build(BuildContext context) {
-    return null;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Displaying ${fomula.name} Detail"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.save),
+        onPressed: () async{
+
+        },
+      ),
+      body: Column(
+
+      ),
+    );
   }
 }

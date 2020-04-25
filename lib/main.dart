@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './components/home.dart';
-import './components/settings.dart';
+import './components/_exporter.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +14,8 @@ class MyApp extends StatelessWidget {
       ),
       home: Home(),
       routes: <String, WidgetBuilder>{
-        '/home': (BuildContext context) => Home(),
+        '/home'    : (BuildContext context) => Home(),
+        '/search'  : (BuildContext context) => Search(),
         '/settings': (BuildContext context) => Settings(),
       },
     );

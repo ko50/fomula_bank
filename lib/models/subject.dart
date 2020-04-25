@@ -2,13 +2,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert';
 
-import '../models/fomula.dart';
+import '../models/_exporter.dart';
 
 class Subject {
   String name;
-  List<Fomula> fomulaList;
+  List fomulaList;
 
-  Subject({this.name, this.fomulaList});
+  Subject({this.name, this.fomulaList}) {
+    this.fomulaList ??= [];
+  }
 
   Subject.fromJson(Map<String, dynamic> json)
     : name       = json["name"],
