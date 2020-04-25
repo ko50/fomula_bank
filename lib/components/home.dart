@@ -65,7 +65,7 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
-            decoration: BoxDecoration(border: bottomBorder()),
+            decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
           ),
           FutureBuilder(
             future: SubjectPrefarence.getSubjectList(),
@@ -87,26 +87,29 @@ class _HomeState extends State<Home> {
                     child: ListView.builder(
                       itemBuilder: (BuildContext context, int index) {
                         Subject subject = subjectList[index];
-                        return ListTile(
-                          title: Text(subject.name),
-                          trailing: Text("This Subject has\n${subject.fomulaList.length} Fomulas"),
-                          onTap: () {
-                            List fomulaList = subject.fomulaList;
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => Datail(subject: subject, fomulaList: fomulaList,)
-                              ),
-                            );
-                          },
-                          onLongPress: () async{
-                            bool isDelete = await confirmDeleteSubjectDialog(context);
-                            if(isDelete) {
-                              setState(() {
-                                subjectList.removeAt(index);
-                              });
-                              await SubjectPrefarence.saveSubjectList(subjectList);
-                            }
-                          },
+                        return Container(
+                          child: ListTile(
+                            title: Text(subject.name),
+                            trailing: Text("This Subject has\n${subject.fomulaList.length} Fomulas"),
+                            onTap: () {
+                              List fomulaList = subject.fomulaList;
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => Preview(subject: subject, fomulaList: fomulaList, index: index)
+                                ),
+                              );
+                            },
+                            onLongPress: () async{
+                              bool isDelete = await confirmDeleteSubjectDialog(context);
+                              if(isDelete) {
+                                setState(() {
+                                  subjectList.removeAt(index);
+                                });
+                                await SubjectPrefarence.saveSubjectList(subjectList);
+                              }
+                            },
+                          ),
+                          decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
                         );
                       },
                       itemCount: subjectList.length,

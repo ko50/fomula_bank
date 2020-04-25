@@ -25,7 +25,7 @@ Widget _drawerTile(var context, String title, String pageRaute, icon) {
         );
       },
     ),
-    decoration: BoxDecoration(border: bottomBorder()),
+    decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
   );
 }
 Drawer drawer(var context) {
@@ -61,6 +61,6 @@ Drawer drawer(var context) {
   );
 }
 
-Border bottomBorder() {
-  return Border(bottom: BorderSide(color: Colors.grey, width: 1.0));
+BorderSide greyThinBorder() {
+  return BorderSide(color: Colors.grey, width: 1.0);
 }
