@@ -1,16 +1,54 @@
 import '../_exporter.dart';
 import '../../models/_exporter.dart';
+import '../../tools/_exporter.dart';
 
 class AddFomulaPage extends StatelessWidget {
   final int index;
 
   AddFomulaPage({this.index});
 
+  Widget inputFomulaDataForm({double height, String induction, TextEditingController controller, String hintText}) {
+    return Container(
+      padding: EdgeInsets.all(12.0),
+      height: height,
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(induction, style: TextStyle(fontSize: 22,)),
+                ),
+              ],
+            ),
+            decoration: BoxDecoration(border: Border.all(width: 1.0, color: Colors.grey), borderRadius: BorderRadius.circular(4.0)),
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  decoration: InputDecoration.collapsed(
+                    hintText: hintText,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Fomula newFomula;
-    List<Subject> subjectList;
-    var nameController, describeController, expressionController, tagListController = TextEditingController();
+    var nameController = TextEditingController();
+    var describeController = TextEditingController();
+    var expressionController = TextEditingController();
+    var tagListController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Text("新しい公式を追加します"),
@@ -25,7 +63,7 @@ class AddFomulaPage extends StatelessWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text("無効な値が入力されました"),
-                  content: Text("パラメーターは一つも空白でないようにしてください"),
+                  content: Text("パラメーターは一つも空白が無いようにしてください"),
                   actions: <Widget>[
                     FlatButton(
                       child: Text("ok"),
@@ -38,73 +76,47 @@ class AddFomulaPage extends StatelessWidget {
               }
             );
           }else{
-            subjectList = await SubjectPrefarence.getSubjectList();
             newFomula = Fomula(
               name: nameController.text,
               describe: describeController.text,
               expression: expressionController.text,
               tagList: tagListController.text.split(" "),
             );
-            subjectList[index].fomulaList.add(newFomula);
-            await SubjectPrefarence.saveSubjectList(subjectList);
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(newFomula);
           }
         },
       ),
       body: Column(
         children: <Widget>[
-          ListView(
-            children: <Widget>[
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        controller: nameController,
-                      ),
-                    ),
-                  ],
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                inputFomulaDataForm(
+                  height: 200,
+                  induction: "1. 公式の名前を入力してください",
+                  controller: nameController,
+                  hintText: "Input Fomula Name",
                 ),
-              ),
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        controller: expressionController,
-                        maxLines: 2,
-                      ),
-                    ),
-                  ],
+                inputFomulaDataForm(
+                  height: 200,
+                  induction: "2. 公式の式部分を入力してください",
+                  controller: expressionController,
+                  hintText: "Input Fomula Part of Expression",
                 ),
-              ),
-              Container(
-                height: 70,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        controller: describeController,
-                        maxLines: null,
-                      ),
-                    ),
-                  ],
+                inputFomulaDataForm(
+                  height: 300,
+                  induction: "3. 公式の説明文や定義を入力してください",
+                  controller: describeController,
+                  hintText: "Input Fomula Description"
                 ),
-              ),
-              Container(
-                height: 25,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        controller: tagListController,
-                        maxLines: null,
-                      ),
-                    ),
-                  ],
+                inputFomulaDataForm(
+                  height: 250,
+                  induction: "4. この公式に付けるタグを入力してください",
+                  controller: tagListController,
+                  hintText: "Input Tags",
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

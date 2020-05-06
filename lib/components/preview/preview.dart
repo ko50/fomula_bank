@@ -6,32 +6,33 @@ import './_addfomula.dart';
 class Preview extends StatefulWidget {
   final Subject subject;
   final List fomulaList;
-  final int index;
+  final int parentIndex;
 
-  Preview({this.subject, this.fomulaList, this.index});
+  Preview({this.subject, this.fomulaList, this.parentIndex});
 
   @override
-  _PreviewState createState() => _PreviewState(subject, fomulaList, index);
+  _PreviewState createState() => _PreviewState(subject, fomulaList, parentIndex);
 }
 class _PreviewState extends State<Preview> {
   Subject subject;
   List fomulaList;
-  int index;
+  int parentIndex;
 
-  _PreviewState(this.subject, this.fomulaList, this.index);
+  _PreviewState(this.subject, this.fomulaList, this.parentIndex);
 
   Widget fomulaListView() {
     if(fomulaList.length==0) {
       return Center(child: Text("公式が一つもありません"));
     }else{
-      ListView.builder(
+      return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           Fomula fomula = fomulaList[index];
           Color color = fomula.liked ? Colors.yellow : Colors.grey;
+          bool isDelete;
           return Container(
             child: ListTile(
               title: Text("${fomula.name}"),
-              subtitle: Text("${fomula.expression}\ntag: ${fomula.tagList}", style: TextStyle(fontSize: 8),),
+              subtitle: Text("${fomula.expression}\ntag: ${fomula.tagList}", style: TextStyle(fontSize: 12),),
               trailing: IconButton(
                 color: color,
                 onPressed: () {
@@ -42,6 +43,27 @@ class _PreviewState extends State<Preview> {
                 },
                 icon: Icon(Icons.star),
               ),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (BuildContext context) => Datail(
+                    childIndex: index,
+                    parentIndex: parentIndex,
+                    parentSubject: subject,
+                    fomula: fomula,
+                  ))
+                );
+              },
+              onLongPress: () async{
+                isDelete = await confirmDeleteFomulaDialog(context);
+                if(isDelete && !fomula.liked) {
+                  List subjectList = await SubjectPrefarence.getSubjectList();
+                  setState(() {
+                    subject.fomulaList.removeAt(index);
+                  });
+                  subjectList[parentIndex] = subject;
+                  await SubjectPrefarence.saveSubjectList(subjectList);
+                }
+              },
             ),
             decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
           );
@@ -59,12 +81,18 @@ class _PreviewState extends State<Preview> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).push(
+            onPressed: () async{
+              Fomula newFomula = await Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (BuildContext context) => AddFomulaPage(index: index)
+                  builder: (BuildContext context) => AddFomulaPage(index: parentIndex)
                 ),
               );
+              setState(() {
+                subject.fomulaList.add(newFomula);
+              });
+              List subjectList = await SubjectPrefarence.getSubjectList();
+              subjectList[parentIndex] = subject;
+              SubjectPrefarence.saveSubjectList(subjectList);
             },
           ),
         ],

@@ -37,15 +37,11 @@ Drawer drawer(var context) {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 8.0),
+                padding: EdgeInsets.only(top: 4.0),
                 child: Text("Fomula Bank", style: TextStyle(
                   fontSize: 30,
                   color: Theme.of(context).primaryTextTheme.title.color,
                 )),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("もし、あなたが公式を覚えていられないというならば、\n私がかわりに覚えておいて差し上げます", style: TextStyle(fontSize: 17),),
               ),
             ],
           ),

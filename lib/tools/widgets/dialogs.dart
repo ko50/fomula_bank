@@ -50,15 +50,44 @@ Future<bool> confirmDeleteSubjectDialog(var context) async{
         content: Text("本当に削除しますか?"),
         actions: <Widget>[
           FlatButton(
-          child: Text("cancel"),
-          onPressed: () {
-            Navigator.of(context).pop(false);
+            child: Text("cancel"),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+          ),
+          FlatButton(
+            child: Text("yes"),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
+        ],
+      );
+    }
+  );
+  return result ??= false;
+}
+
+/// 公式を削除するときの確認をとるダイアログを表示します
+Future<bool> confirmDeleteFomulaDialog(var context) async{
+  bool result = await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("この公式を削除しますか？"),
+        content: Text("本当に削除しますか？"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("cancel"),
+            onPressed: () {
+              Navigator.of(context).pop(false);
           },
           ),
           FlatButton(
-          child: Text("yes"),
-          onPressed: () {
-            Navigator.of(context).pop(true);
+            child: Text("yes"),
+            onPressed: () {
+              Navigator.of(context).pop(true);
           },
           ),
         ],
