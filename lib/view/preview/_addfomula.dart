@@ -1,6 +1,6 @@
-import '../_exporter.dart';
-import '../../models/_exporter.dart';
-import '../../tools/_exporter.dart';
+import 'package:flutter/material.dart';
+
+import '../../datamanageclass/fomula.dart';
 
 class AddFomulaPage extends StatelessWidget {
   final int index;
@@ -8,37 +8,27 @@ class AddFomulaPage extends StatelessWidget {
   AddFomulaPage({this.index});
 
   Widget inputFomulaDataForm({double height, String induction, TextEditingController controller, String hintText}) {
-    return Container(
-      padding: EdgeInsets.all(12.0),
-      height: height,
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(induction, style: TextStyle(fontSize: 22,)),
-                ),
-              ],
-            ),
-            decoration: BoxDecoration(border: Border.all(width: 1.0, color: Colors.grey), borderRadius: BorderRadius.circular(4.0)),
-          ),
-          Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
             children: <Widget>[
               Expanded(
-                child: TextField(
-                  controller: controller,
-                  decoration: InputDecoration.collapsed(
-                    hintText: hintText,
-                  ),
-                ),
+                child: Text(induction, style: TextStyle(fontSize: 22,)),
               ),
             ],
           ),
-        ],
-      ),
-      decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
+          decoration: BoxDecoration(border: Border.all(width: 1.0, color: Colors.grey), borderRadius: BorderRadius.circular(4.0)),
+        ),
+          TextField(
+            controller: controller,
+            decoration: InputDecoration.collapsed(
+              hintText: hintText,
+            ),
+          ),
+      ],
     );
   }
 

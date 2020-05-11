@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import './_exporter.dart';
-import '../models/_exporter.dart';
-import '../tools/_exporter.dart';
+import '../datail/detail.dart';
+import '../widgets/drawer.dart';
+import '../../datamanageclass/subject.dart';
+import '../../datamanageclass/fomula.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -56,7 +57,7 @@ class _SearchState extends State<Search> {
                 );
               },
             ),
-            decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
+            decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
           );
         },
         itemCount: result.length,
@@ -68,7 +69,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     var controller = TextEditingController();
     return Scaffold(
-      drawer: drawer(context),
+      drawer: GeneralDrawer(),
       appBar: AppBar(
         title: Text("全体検索"),
       ),
@@ -104,7 +105,7 @@ class _SearchState extends State<Search> {
                 ),
               ),
             ),
-            decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
+            decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
           ),
           FutureBuilder(
             future: SubjectPrefarence.getSubjectList(),

@@ -1,6 +1,9 @@
-import './_exporter.dart';
-import '../models/_exporter.dart';
-import '../tools/_exporter.dart';
+import 'package:flutter/material.dart';
+
+import '../preview/preview.dart';
+import '../widgets/drawer.dart';
+import '../widgets/dialogs.dart';
+import '../../datamanageclass/subject.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -13,9 +16,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: drawer(context),
+      drawer: GeneralDrawer(),
       appBar: AppBar(
-        title: Text("Home"),
+        title: Text("Home | Subjects"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -56,17 +59,6 @@ class _HomeState extends State<Home> {
       ),
       body: Column(
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(top: 8.0, left: 8.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text("科目", style: TextStyle(fontSize: 30),),
-                )
-              ],
-            ),
-            decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
-          ),
           FutureBuilder(
             future: SubjectPrefarence.getSubjectList(),
             builder: (BuildContext context, AsyncSnapshot<List<Subject>> snapshot) {
@@ -76,10 +68,15 @@ class _HomeState extends State<Home> {
                 subjectList = snapshot.data;
                 if(subjectList.length==0) {
                   return Padding(
-                    padding: EdgeInsets.only(top: 60.0),
-                    child: Text(
-                      "科目が一つもありません\n画面上部のボタンから追加してください",
-                      style: TextStyle(fontSize: 20,)
+                    padding: EdgeInsets.only(top: 12.0),
+                    child: Center(
+                      child: Text(
+                        "科目が一つもありません\n画面上部のボタンから追加してください",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black54,
+                        )
+                      ),
                     ),
                   );
                 }else{
@@ -109,7 +106,7 @@ class _HomeState extends State<Home> {
                               }
                             },
                           ),
-                          decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
+                          decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
                         );
                       },
                       itemCount: subjectList.length,

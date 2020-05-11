@@ -24,11 +24,11 @@ class Fomula {
   void changeLike(bool value) => this.liked = !value;
 
   Fomula.fromJson(Map<String, dynamic> json)
-    : name       = json["name"],
+      /*name       = json["name"],
       expression = json["expression"],
       describe   = json["describe"],
       liked      = json["liked"],
-      tagList    = (json["tagList"].map((tag) => Tag.fromJson(tag))).toList();
+      tagList    = (json["tagList"].map((tag) => Tag.fromJson(tag))).toList();*/;
 
   Map<String, dynamic> toJson() => {
     "name"       : name,
