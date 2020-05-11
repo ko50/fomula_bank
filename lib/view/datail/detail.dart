@@ -1,6 +1,6 @@
-import './_exporter.dart';
-import '../models/_exporter.dart';
-import '../tools/tool.dart';
+import 'package:flutter/material.dart';
+import '../../datamanageclass/subject.dart';
+import '../../datamanageclass/fomula.dart';
 
 class Datail extends StatefulWidget {
   final int parentIndex;
@@ -58,7 +58,7 @@ class _DatailState extends State<Datail> {
           ),
         ],
       ),
-      decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
     );
   }
 
@@ -93,7 +93,7 @@ class _DatailState extends State<Datail> {
           ),
         ],
       ),
-      decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
     );
   }
 

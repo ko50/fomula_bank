@@ -1,7 +1,11 @@
-import '.././_exporter.dart';
-import '../../models/_exporter.dart';
-import '../../tools/_exporter.dart';
+import 'package:flutter/material.dart';
+
 import './_addfomula.dart';
+import '../datail/detail.dart';
+import '../widgets/dialogs.dart';
+import '../widgets/drawer.dart';
+import '../../datamanageclass/subject.dart';
+import '../../datamanageclass/fomula.dart';
 
 class Preview extends StatefulWidget {
   final Subject subject;
@@ -65,7 +69,7 @@ class _PreviewState extends State<Preview> {
                 }
               },
             ),
-            decoration: BoxDecoration(border: Border(bottom: greyThinBorder())),
+            decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
           );
         },
         itemCount: fomulaList.length,
@@ -75,7 +79,7 @@ class _PreviewState extends State<Preview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: drawer(context),
+      drawer: GeneralDrawer(),
       appBar: AppBar(
         title: Text("Preview Fomulas in ${subject.name}"),
         actions: <Widget>[
@@ -87,12 +91,14 @@ class _PreviewState extends State<Preview> {
                   builder: (BuildContext context) => AddFomulaPage(index: parentIndex)
                 ),
               );
-              setState(() {
-                subject.fomulaList.add(newFomula);
-              });
-              List subjectList = await SubjectPrefarence.getSubjectList();
-              subjectList[parentIndex] = subject;
-              SubjectPrefarence.saveSubjectList(subjectList);
+              if(newFomula!=null) {
+                setState(() {
+                  subject.fomulaList.add(newFomula);
+                });
+                List subjectList = await SubjectPrefarence.getSubjectList();
+                subjectList[parentIndex] = subject;
+                SubjectPrefarence.saveSubjectList(subjectList);
+              }
             },
           ),
         ],

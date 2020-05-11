@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './components/_exporter.dart';
+import './view/home/home.dart';
+import './view/search/search.dart';
+import './view/settingpage/settings.dart';
 
 void main() => runApp(MyApp());
 
