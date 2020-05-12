@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import './addTagDialog.dart';
 import '../../datamanageclass/fomula.dart';
 
 class AddFomulaPage extends StatelessWidget {
@@ -7,27 +8,38 @@ class AddFomulaPage extends StatelessWidget {
 
   AddFomulaPage({this.index});
 
-  Widget inputFomulaDataForm({double height, String induction, TextEditingController controller, String hintText}) {
+  Widget _inputFomulaDataForm({int line=2, String induction, TextEditingController controller, String hintText, double hintSize}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
+        Padding(
           padding: EdgeInsets.all(8.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(induction, style: TextStyle(fontSize: 22,)),
-              ),
-            ],
+          child: Text(
+            induction,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 20),
           ),
-          decoration: BoxDecoration(border: Border.all(width: 1.0, color: Colors.grey), borderRadius: BorderRadius.circular(4.0)),
         ),
-          TextField(
-            controller: controller,
-            decoration: InputDecoration.collapsed(
-              hintText: hintText,
+        TextField(
+          controller: controller,
+          maxLines: line,
+          decoration: InputDecoration.collapsed(
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 2.0),
+              borderRadius: BorderRadius.circular(4.0),
             ),
+            hintText: hintText,
+            hintStyle: TextStyle(fontSize: hintSize)
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget tagInputter() {
+    return Column(
+      children: <Widget>[
+        
       ],
     );
   }
@@ -81,29 +93,25 @@ class AddFomulaPage extends StatelessWidget {
           Expanded(
             child: ListView(
               children: <Widget>[
-                inputFomulaDataForm(
-                  height: 200,
-                  induction: "1. 公式の名前を入力してください",
+                _inputFomulaDataForm(
+                  induction: "公式の名前を入力してください",
                   controller: nameController,
                   hintText: "Input Fomula Name",
                 ),
-                inputFomulaDataForm(
-                  height: 200,
-                  induction: "2. 公式の式部分を入力してください",
+                _inputFomulaDataForm(
+                  induction: "公式の式部分を入力してください",
                   controller: expressionController,
                   hintText: "Input Fomula Part of Expression",
+                  hintSize: 20,
                 ),
-                inputFomulaDataForm(
-                  height: 300,
-                  induction: "3. 公式の説明文や定義を入力してください",
-                  controller: describeController,
-                  hintText: "Input Fomula Description"
-                ),
-                inputFomulaDataForm(
-                  height: 250,
-                  induction: "4. この公式に付けるタグを入力してください",
-                  controller: tagListController,
-                  hintText: "Input Tags",
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async{
+                    await showDialog(
+                      context: context,
+                      child: AddTagDialog(),
+                    );
+                  },
                 ),
               ],
             ),
