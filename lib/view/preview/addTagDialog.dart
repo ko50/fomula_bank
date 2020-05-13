@@ -8,18 +8,21 @@ class AddTagDialog extends StatefulWidget {
 }
 class _AddTagDialogState extends State<AddTagDialog> {
   String name;
-  Color color;
+  Color color = Colors.white;
 
-  Key formKey = GlobalKey<FormState>();
-  FocusNode tagFocus = FocusNode();
+  FocusNode nameFocus = FocusNode();
+  var nameFormKey = GlobalKey<FormState>();
+  var nameContoroller = TextEditingController();
+
   FocusNode colorFocusR = FocusNode();
   FocusNode colorFocusG = FocusNode();
   FocusNode colorFocusB = FocusNode();
-  var nameContoroller = TextEditingController();
+  var colorFormKey = GlobalKey<FormState>();
   var colorControllerR = TextEditingController(text: "255");
   var colorControllerG = TextEditingController(text: "255");
   var colorControllerB = TextEditingController(text: "255");
 
+  /// setColorFormの内容をカラーコードに変換してcolorを更新します
   void changeColor() {
     int r = int.parse(colorControllerR.text);
     int g = int.parse(colorControllerG.text);
@@ -42,8 +45,63 @@ class _AddTagDialogState extends State<AddTagDialog> {
     });
   }
 
+  /// "タグ名を設定してください"
+  Widget nameSetterTitle() {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Text("━━━タグ名を設定してください━━━", style: TextStyle(fontSize: 15),),
+    );
+  }
+
+  /// タグの名前を入力するフォーム lengthの範囲が 1..10 じゃないと怒ります
+  Widget setNameForm() {
+    return Container(
+      padding: EdgeInsets.all(4.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: TextFormField(
+              textInputAction: TextInputAction.done,
+              focusNode: nameFocus,
+              controller: nameContoroller,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(2.0),
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 2.0,
+                  ),
+                ),
+                labelText: "タグの名前を入力",
+                hintText: "Tag",
+              ),
+              validator: (value) {
+                if(value.length > 10) return ("タグ名が長すぎます。\n10文字以内で設定してください");
+                else if(value.length == 0) return ("タグ名を入力してください");
+                else return null;
+              },
+              onFieldSubmitted: (v) {
+                if(nameFormKey.currentState.validate()) {
+                  nameFocus.unfocus();
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// "色を設定してください"
+  Widget colorSetterTitle() {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Text("━━━━色を設定してください━━━━", style: TextStyle(fontSize: 15),),
+    );
+  }
+
   /// 色の数値を入力するフォーム 入力が数字じゃないと怒ります
-  Expanded setColorForm(TextEditingController controller, FocusNode focusNode, String labelText) {
+  Widget setColorForm(TextEditingController controller, FocusNode focusNode, String labelText) {
     return Expanded(
       flex: 1,
       child: TextFormField(
@@ -52,15 +110,11 @@ class _AddTagDialogState extends State<AddTagDialog> {
         textInputAction: TextInputAction.done,
         focusNode: focusNode,
         onFieldSubmitted: (v) {
-          changeColor();
           focusNode.unfocus();
         },
         validator: (value) {
-          if(value.length == 0 || int.tryParse(value) != null || (int.parse(value) >= 0 && int.parse(value) <= 255)) {
-            return ("0～255の間の数値のみ入力可能です");
-          }else{
-            return ("");
-          }
+          if(value.length == 0 || int.tryParse(value) == null || !(int.parse(value) >= 0 && int.parse(value) <= 255)) return ("異常な値");
+          else return null;
         },
         decoration: InputDecoration(
           labelText: labelText,
@@ -75,65 +129,76 @@ class _AddTagDialogState extends State<AddTagDialog> {
     );
   }
 
+  /// 現在の色を表示し、押すと色を更新するボタン
+  Widget colorPreviewButton() {
+    return Column(
+      children: <Widget>[
+        Text("現在の色", style: TextStyle(fontSize: 13)),
+        MaterialButton(
+          height: 50,
+          minWidth: 50,
+          color: color,
+          child: Container(
+            height: 20,
+            width: 20,
+            color: Colors.white70,
+            child: Center(child: Icon(Icons.sync, size: 15,)),
+          ),
+          onPressed: () {
+            if(colorFormKey.currentState.validate()) {
+              changeColor();
+            }
+          },
+        ),
+      ],
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-    color = Colors.black;
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("新しいタグの名前と色を設定してください"),
-      content: Form(
-        key: formKey,
-        child: Container(
-          height: 400,
-          child: Column(
-            children: <Widget>[/*
-              TextField(
-                controller: nameContoroller,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(2.0),
-                    borderSide: BorderSide(
-                      color: Colors.blue,
-                      width: 2.0,
-                    ),
-                  ),
-                  labelText: "タグの名前を入力してください",
-                  hintText: "Tag",
-                ),
-              ),*/
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("━━━色を設定してください━━━", style: TextStyle(fontSize: 20),),
-              ),
-              Flex(
-                direction: Axis.horizontal,
+      title: Text("タグを追加"),
+      content: Container(
+        height: 250,
+        child: Flex(
+          direction: Axis.vertical,
+          children: <Widget>[
+            Form(
+              key: nameFormKey,
+              child: Column(
                 children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: color,
-                      border: Border.all(
-                        width: 1.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10,),
-                  setColorForm(colorControllerR, colorFocusR, "R"),
-                  SizedBox(width: 10,),
-                  setColorForm(colorControllerG, colorFocusG, "G"),
-                  SizedBox(width: 10,),
-                  setColorForm(colorControllerB, colorFocusB, "B"),
+                  nameSetterTitle(),
+                  setNameForm(),
                 ],
               ),
-            ],
-          ),
+            ),
+            SizedBox(height: 20),
+            Form(
+              key: colorFormKey,
+              child: Column(
+                children: <Widget>[
+                  colorSetterTitle(),
+                  Flex(
+                    direction: Axis.horizontal,
+                    children: <Widget>[
+                      colorPreviewButton(),
+                      SizedBox(width: 10),
+                      setColorForm(colorControllerR, colorFocusR, "R"),
+                      SizedBox(width: 10),
+                      setColorForm(colorControllerG, colorFocusG, "G"),
+                      SizedBox(width: 10),
+                      setColorForm(colorControllerB, colorFocusB, "B"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
       actions: <Widget>[
@@ -143,9 +208,11 @@ class _AddTagDialogState extends State<AddTagDialog> {
         ),
         FlatButton(
           child: Text("complete"),
-          onPressed: () => Navigator.of(context).pop(
-            Tag(name: name, color: color)
-          ),
+          onPressed: () {
+            if(nameFormKey.currentState.validate() && colorFormKey.currentState.validate()) {
+              Navigator.of(context).pop(Tag(name: name, color: color));
+            }
+          }
         ),
       ],
     );
