@@ -4,9 +4,9 @@ import './addTagDialog.dart';
 import '../../datamanageclass/fomula.dart';
 
 class AddFomulaPage extends StatelessWidget {
-  final int index;
+  final int subjectIndex;
 
-  AddFomulaPage({this.index});
+  AddFomulaPage({this.subjectIndex});
 
   Widget _inputFomulaDataForm({int line=2, String induction, TextEditingController controller, String hintText, double hintSize}) {
     return Column(
@@ -109,7 +109,9 @@ class AddFomulaPage extends StatelessWidget {
                   onPressed: () async{
                     await showDialog(
                       context: context,
-                      child: AddTagDialog(),
+                      child: AddTagDialog(
+                        
+                      ),
                     );
                   },
                 ),
