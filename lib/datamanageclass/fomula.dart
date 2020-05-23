@@ -13,7 +13,7 @@ class Fomula {
   Fomula({this.name, this.expression, this.describe, this.liked, this.tagList}) {
     this.describe ??= "";
     this.liked    ??= false;
-    this.tagList  ??=  TagList([]);
+    this.tagList  ??=  TagList();
   }
 
   void update({String newName, String newExpression, String newDescribe, TagList newTagList}) {

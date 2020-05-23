@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../datamanageclass/tag.dart';
 
+/// Tagを追加するDialog
 class AddTagDialog extends StatefulWidget {
   @override
   _AddTagDialogState createState() => _AddTagDialogState();
@@ -53,7 +54,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
     );
   }
 
-  /// タグの名前を入力するフォーム lengthの範囲が 1..10 じゃないと怒ります
+  /// タグの名前を入力するフォーム 五文字以内じゃないと怒ります
   Widget setNameForm() {
     return Container(
       padding: EdgeInsets.all(4.0),
@@ -76,7 +77,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
                 hintText: "Tag",
               ),
               validator: (value) {
-                if(value.length > 10) return ("タグ名が長すぎます。\n10文字以内で設定してください");
+                if(value.length > 5) return ("5文字以内で入力してください");
                 else if(value.length == 0) return ("タグ名を入力してください");
                 else return null;
               },

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-import './addFomulaPage.dart';
+import './_addFomulaPage.dart';
+
 import '../datail/detail.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/drawer.dart';
+
 import '../../datamanageclass/subject.dart';
 import '../../datamanageclass/fomula.dart';
 
@@ -88,7 +90,7 @@ class _PreviewState extends State<Preview> {
             onPressed: () async{
               Fomula newFomula = await Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (BuildContext context) => AddFomulaPage(index: parentIndex)
+                  builder: (BuildContext context) => AddFomulaPage(subjectIndex: parentIndex)
                 ),
               );
               if(newFomula!=null) {
