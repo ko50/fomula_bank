@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './_addTagDialog.dart';
 import './_tagMatrix.dart';
 import './_inputFomulaDataForm.dart';
+import '../widgets/dialogs/inputTagDataDialog.dart';
 import '../../datamanageclass/fomula.dart';
 import '../../datamanageclass/tag.dart';
 

@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 
-import '../../datamanageclass/tag.dart';
+import '../../../datamanageclass/tag.dart';
 
 /// Tagを追加するDialog
-class AddTagDialog extends StatefulWidget {
-  @override
-  _AddTagDialogState createState() => _AddTagDialogState();
-}
-class _AddTagDialogState extends State<AddTagDialog> {
-  String name;
-  Color color = Colors.white;
+class InputTagDataDialog extends StatefulWidget {
+  final String name;
+  final Color color;
 
+  InputTagDataDialog({this.name, this.color});
+
+  @override
+  _InputTagDataDialogState createState() => _InputTagDataDialogState(name, color);
+}
+class _InputTagDataDialogState extends State<InputTagDataDialog> {
+  String name;
+  Color color;
+
+  _InputTagDataDialogState(this.name, this.color) {
+    name ??= "";
+    color ??= Colors.white;
+  }
+
+  // 正しい定義場所がわからないので誰か教えてください
   FocusNode nameFocus = FocusNode();
   var nameFormKey = GlobalKey<FormState>();
   var nameContoroller = TextEditingController();
@@ -19,15 +30,23 @@ class _AddTagDialogState extends State<AddTagDialog> {
   FocusNode colorFocusG = FocusNode();
   FocusNode colorFocusB = FocusNode();
   var colorFormKey = GlobalKey<FormState>();
-  var colorControllerR = TextEditingController(text: "255");
-  var colorControllerG = TextEditingController(text: "255");
-  var colorControllerB = TextEditingController(text: "255");
+  var colorCtrlerR = TextEditingController();
+  var colorCtrlerG = TextEditingController();
+  var colorCtrlerB = TextEditingController();
 
-  /// setColorFormの内容をカラーコードに変換してcolorを更新します
-  void changeColor() {
-    int r = int.parse(colorControllerR.text);
-    int g = int.parse(colorControllerG.text);
-    int b = int.parse(colorControllerB.text);
+  /// 16進数で与えられるカラーコードを10進数に置き換えます 命名
+  String decodeColorCode(String code) {
+    // TODO tryParseにしてエラー対策した方がいい
+    int decimalCode = int.parse("0x$code");
+
+    return decimalCode.toString();
+  }
+
+  /// ColorController.textから値を取り込み16進数にする
+  String encodeColorCode() {
+    int r = int.parse(colorCtrlerR.text);
+    int g = int.parse(colorCtrlerG.text);
+    int b = int.parse(colorCtrlerB.text);
     String rS = r.toRadixString(16);
     String gS = g.toRadixString(16);
     String bS = b.toRadixString(16);
@@ -41,6 +60,13 @@ class _AddTagDialogState extends State<AddTagDialog> {
       bS = "0$bS";
     }
     String colorCode = "0xff$rS$gS$bS";
+
+    return colorCode;
+  }
+
+  /// setColorFormの内容をカラーコードに変換してcolorを更新します
+  void upDateColor() {
+    String colorCode = encodeColorCode();
     setState(() {
       color = Color(int.parse(colorCode));
     });
@@ -147,7 +173,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
           ),
           onPressed: () {
             if(colorFormKey.currentState.validate()) {
-              changeColor();
+              upDateColor();
             }
           },
         ),
@@ -158,6 +184,14 @@ class _AddTagDialogState extends State<AddTagDialog> {
   @override
   void initState() {
     super.initState();
+    String colorCode = encodeColorCode();
+    String r, g, b;
+    r = decodeColorCode(colorCode.substring(3, 5));
+    g = decodeColorCode(colorCode.substring(5, 7));
+    b = decodeColorCode(colorCode.substring(7));
+    colorCtrlerR.text = r;
+    colorCtrlerG.text = g;
+    colorCtrlerB.text = b;
   }
 
   @override
@@ -189,11 +223,11 @@ class _AddTagDialogState extends State<AddTagDialog> {
                     children: <Widget>[
                       colorPreviewButton(),
                       SizedBox(width: 10),
-                      setColorForm(colorControllerR, colorFocusR, "R"),
+                      setColorForm(colorCtrlerR, colorFocusR, "R"),
                       SizedBox(width: 10),
-                      setColorForm(colorControllerG, colorFocusG, "G"),
+                      setColorForm(colorCtrlerG, colorFocusG, "G"),
                       SizedBox(width: 10),
-                      setColorForm(colorControllerB, colorFocusB, "B"),
+                      setColorForm(colorCtrlerB, colorFocusB, "B"),
                     ],
                   ),
                 ],

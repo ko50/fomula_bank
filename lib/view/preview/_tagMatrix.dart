@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/tagCard.dart';
 import '../widgets/dialogs/confirmDeleteTagDialog.dart';
+import '../widgets/dialogs/inputTagDataDialog.dart';
 import '../../datamanageclass/tag.dart';
 
 class TagMatrix extends StatefulWidget {
@@ -52,8 +53,18 @@ class _TagMatrixState extends State<TagMatrix> {
     return matrixOfTag;
   }
 
-  Future showEditTagDialog(context, int index, Tag tag) {
+  Future showEditTagDialog(context, int index, Tag tag) async{
+    Tag editedTag = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => InputTagDataDialog(
+        name:  tag.name,
+        color: tag.color,
+      )
+    );
+    if(editedTag == null) return;
 
+    tagList.list[index] = editedTag;
   }
 
   Row buildRowOfTagCard(List rowOfTag) {
