@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import './view/home/home.dart';
 import './view/search/search.dart';
-import './view/settingpage/settings.dart';
+import './view/settings/settings.dart';
 
 void main() => runApp(MyApp());
 

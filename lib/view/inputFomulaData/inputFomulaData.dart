@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 
-import './_tagMatrix.dart';
-import './_inputFomulaDataForm.dart';
-import '../widgets/dialogs/inputTagDataDialog.dart';
+import './_form.dart';
+
 import '../../datamanageclass/fomula.dart';
 import '../../datamanageclass/tag.dart';
+
+import '../widgets/tagCardMatrix.dart';
+import '../widgets/dialogs/inputTagDataDialog.dart';
 
 class AddFomulaPage extends StatelessWidget {
   final int subjectIndex;
 
   AddFomulaPage({this.subjectIndex});
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    Fomula newFomula;
-    TagList tagList;
-    var nameController       = TextEditingController();
-    var describeController   = TextEditingController();
-    var expressionController = TextEditingController();
-    var tagListController    = TextEditingController();
+    Fomula _newFomula;
+    TagList _tagList;
+    var _nameController       = TextEditingController();
+    var _describeController   = TextEditingController();
+    var _expressionController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Text("新しい公式を追加します"),
@@ -26,14 +29,21 @@ class AddFomulaPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.save),
         onPressed: () async{
-          if([nameController.text.trim(), describeController.text.trim(), expressionController.text.trim(), tagListController.text.trim()].contains("")) {
+          if(formKey.currentState.validate()) {
+            _newFomula = Fomula(
+              name:       _nameController.text,
+              describe:   _describeController.text,
+              expression: _expressionController.text,
+            );
+            Navigator.of(context).pop(_newFomula);
+          }else{
             await showDialog(
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text("無効な値が入力されました"),
-                  content: Text("パラメーターは一つも空白が無いようにしてください"),
+                  content: Text("パラメーターは一つも空白が無いようにしてください"), // TODO このページをちゃんとつくる(特にTag関連)
                   actions: <Widget>[
                     FlatButton(
                       child: Text("ok"),
@@ -45,13 +55,6 @@ class AddFomulaPage extends StatelessWidget {
                 );
               }
             );
-          }else{
-            newFomula = Fomula(
-              name: nameController.text,
-              describe: describeController.text,
-              expression: expressionController.text,
-            );
-            Navigator.of(context).pop(newFomula);
           }
         },
       ),
@@ -61,16 +64,21 @@ class AddFomulaPage extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 InputFomulaDataForm(
-                  induction: "公式の名前を入力してください",
-                  controller: nameController,
+                  labelText: "公式の名前を入力してください",
+                  controller: _nameController,
                   hintText: "Input Fomula Name",
                 ),
                 InputFomulaDataForm(
-                  induction: "公式の式部分を入力してください",
-                  controller: expressionController,
-                  hintText: "Input Fomula Part of Expression",
-                  hintSize: 20,
+                  labelText: "公式に説明を追加してください",
+                  controller: _describeController,
+                  hintText: "Describe this Formula",
                 ),
+                InputFomulaDataForm(
+                  labelText: "公式の式部分を入力してください",
+                  controller: _expressionController,
+                  hintText: "Input Fomula Part of Expression",
+                ),
+                TagCardMatrix(_tagList),
               ],
             ),
           ),

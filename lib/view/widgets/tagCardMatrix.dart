@@ -5,19 +5,31 @@ import '../widgets/dialogs/confirmDeleteTagDialog.dart';
 import '../widgets/dialogs/inputTagDataDialog.dart';
 import '../../datamanageclass/tag.dart';
 
-class TagMatrix extends StatefulWidget {
+class TagCardMatrix extends StatefulWidget {
   final TagList tagList;
 
-  TagMatrix(this.tagList);
+  TagCardMatrix(this.tagList);
 
   @override
-  _TagMatrixState createState() => _TagMatrixState(tagList);
+  _TagCardMatrixState createState() => _TagCardMatrixState(tagList);
 }
-class _TagMatrixState extends State<TagMatrix> {
+class _TagCardMatrixState extends State<TagCardMatrix> {
   TagList tagList;
   List<Widget> cardMatrix;
 
-  _TagMatrixState(this.tagList);
+  _TagCardMatrixState(this.tagList);
+
+  Future showAddNewTagDialog() async{
+    Tag newTag = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => InputTagDataDialog(),
+    );
+    if(newTag == null) return;
+    setState(() {
+      tagList.list.add(newTag);
+    });
+  }
 
   Future showConfirmDeleteTag(context, int index) async{
     bool isDelete = await showDialog(
@@ -33,7 +45,7 @@ class _TagMatrixState extends State<TagMatrix> {
     }
   }
 
-  List<List> constructTagMatrix() {
+  List<List> constructTagCardMatrix() {
     List<List> matrixOfTag = [[]];
     double width = 0;
     tagList.list.forEach((tag) {
@@ -63,8 +75,9 @@ class _TagMatrixState extends State<TagMatrix> {
       )
     );
     if(editedTag == null) return;
-
-    tagList.list[index] = editedTag;
+    setState(() {
+      tagList.list[index] = editedTag;
+    });
   }
 
   Row buildRowOfTagCard(List rowOfTag) {
@@ -75,7 +88,7 @@ class _TagMatrixState extends State<TagMatrix> {
     return Row(children: rowOfTag);
   }
 
-  Widget buildBody(List<List> matrix) {
+  Widget buildTagCardMatrix(List<List> matrix) {
     List<Widget> matrixOfTagCard = [];
     matrix.map((rowOfTag) => buildRowOfTagCard(rowOfTag));
     if(matrixOfTagCard.length == 0) {
@@ -87,11 +100,19 @@ class _TagMatrixState extends State<TagMatrix> {
 
   @override
   Widget build(BuildContext context) {
-    List<List> matrix = constructTagMatrix();
+    List<List> matrix = constructTagCardMatrix();
     double height = (matrix.length * 15).toDouble(); if(height==0) height = 15;
     return Container(
       height: height,
-      child: buildBody(matrix),
+      child: Column(
+        children: <Widget>[
+          RaisedButton(
+            child: Icon(Icons.add),
+            onPressed: showAddNewTagDialog,
+          ),
+          buildTagCardMatrix(matrix),
+        ],
+      ),
     );
   }
 }

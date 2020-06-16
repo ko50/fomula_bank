@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './_addFomulaPage.dart';
-
+import '../inputFomulaData/inputFomulaData.dart';
 import '../datail/detail.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/drawer.dart';

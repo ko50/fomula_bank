@@ -148,7 +148,7 @@ class _DatailState extends State<Datail> {
       nameController       = TextEditingController(text: fomula.name);
       describeController   = TextEditingController(text: fomula.describe);
       expressionController = TextEditingController(text: fomula.expression);
-      tagListController    = TextEditingController(text: fomula.tagList.join(" "));
+      tagListController    = TextEditingController(text: fomula.tagList.list.join(" "));
       return ListView(
         children: <Widget>[
           inputFomulaDataForm(
@@ -196,7 +196,7 @@ class _DatailState extends State<Datail> {
             height: 250,
             fontSize: 16,
             title: "Tags",
-            message: fomula.tagList.join(" "),
+            message: fomula.tagList.list.join(" "),
           ),
         ],
       );

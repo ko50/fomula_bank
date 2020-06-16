@@ -22,27 +22,28 @@ class _InputTagDataDialogState extends State<InputTagDataDialog> {
   }
 
   // 正しい定義場所がわからないので誰か教えてください
-  FocusNode nameFocus = FocusNode();
-  var nameFormKey = GlobalKey<FormState>();
-  var nameContoroller = TextEditingController();
-
+  FocusNode nameFocus   = FocusNode();
   FocusNode colorFocusR = FocusNode();
   FocusNode colorFocusG = FocusNode();
   FocusNode colorFocusB = FocusNode();
-  var colorFormKey = GlobalKey<FormState>();
-  var colorCtrlerR = TextEditingController();
-  var colorCtrlerG = TextEditingController();
-  var colorCtrlerB = TextEditingController();
+
+  GlobalKey<FormState> nameFormKey  = GlobalKey<FormState>();
+  GlobalKey<FormState> colorFormKey = GlobalKey<FormState>();
+
+  TextEditingController nameContoroller = TextEditingController();
+  TextEditingController colorCtrlerR    = TextEditingController();
+  TextEditingController colorCtrlerG    = TextEditingController();
+  TextEditingController colorCtrlerB    = TextEditingController();
 
   /// 16進数で与えられるカラーコードを10進数に置き換えます 命名
   String decodeColorCode(String code) {
-    // TODO tryParseにしてエラー対策した方がいい
+    // TODO tryParseにして
     int decimalCode = int.parse("0x$code");
 
     return decimalCode.toString();
   }
 
-  /// ColorController.textから値を取り込み16進数にする
+  /// ColorController.textから値を取り込み16進数にします
   String encodeColorCode() {
     int r = int.parse(colorCtrlerR.text);
     int g = int.parse(colorCtrlerG.text);
@@ -72,7 +73,6 @@ class _InputTagDataDialogState extends State<InputTagDataDialog> {
     });
   }
 
-  /// "タグ名を設定してください"
   Widget nameSetterTitle() {
     return Padding(
       padding: EdgeInsets.all(8.0),
@@ -119,7 +119,6 @@ class _InputTagDataDialogState extends State<InputTagDataDialog> {
     );
   }
 
-  /// "色を設定してください"
   Widget colorSetterTitle() {
     return Padding(
       padding: EdgeInsets.all(8.0),
