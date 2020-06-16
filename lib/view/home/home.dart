@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../preview/preview.dart';
 import '../widgets/drawer.dart';
 import '../widgets/dialogs.dart';
-import '../../datamanageclass/subject.dart';
+import '../../data_manager_class/subject.dart';
 
 class Home extends StatefulWidget {
   @override

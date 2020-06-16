@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import './_form.dart';
 
-import '../../datamanageclass/fomula.dart';
-import '../../datamanageclass/tag.dart';
+import '../../data_manager_class/fomula.dart';
+import '../../data_manager_class/tag.dart';
 
-import '../widgets/tagCardMatrix.dart';
-import '../widgets/dialogs/inputTagDataDialog.dart';
+import '../widgets/tag_card_matrix.dart';
+
+import '../widgets/dialogs/input_tag_data_dialog.dart';
 
 class AddFomulaPage extends StatelessWidget {
   final int subjectIndex;

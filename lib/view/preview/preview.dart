@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../inputFomulaData/inputFomulaData.dart';
+import '../input_fomula_data/input_fomula_data.dart';
 import '../datail/detail.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/drawer.dart';
 
-import '../../datamanageclass/subject.dart';
-import '../../datamanageclass/fomula.dart';
+import '../../data_manager_class/subject.dart';
+import '../../data_manager_class/fomula.dart';
 
 class Preview extends StatefulWidget {
   final Subject subject;

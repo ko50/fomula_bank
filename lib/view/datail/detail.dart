@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../datamanageclass/subject.dart';
-import '../../datamanageclass/fomula.dart';
+
+import '../../data_manager_class/fomula.dart';
+import '../../data_manager_class/subject.dart';
 
 class Datail extends StatefulWidget {
   final int parentIndex;

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../datail/detail.dart';
 import '../widgets/drawer.dart';
-import '../../datamanageclass/subject.dart';
-import '../../datamanageclass/fomula.dart';
+import '../../data_manager_class/subject.dart';
+import '../../data_manager_class/fomula.dart';
 
 class Search extends StatefulWidget {
   @override

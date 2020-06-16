@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/tagCard.dart';
-import '../widgets/dialogs/confirmDeleteTagDialog.dart';
-import '../widgets/dialogs/inputTagDataDialog.dart';
-import '../../datamanageclass/tag.dart';
+import '../../data_manager_class/tag.dart';
+
+import '../widgets/tag_card.dart';
+
+import '../widgets/dialogs/confirm_delete_tag_dialog.dart';
+import '../widgets/dialogs/input_tag_data_dialog.dart';
 
 class TagCardMatrix extends StatefulWidget {
   final TagList tagList;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../datamanageclass/tag.dart';
+import '../../../data_manager_class/tag.dart';
 
 /// Tagを追加するDialog
 class InputTagDataDialog extends StatefulWidget {
