@@ -18,6 +18,7 @@ class AddFomulaPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? a;
     Fomula _newFomula;
     TagList _tagList;
     var _nameController       = TextEditingController();

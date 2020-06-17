@@ -93,7 +93,7 @@ class _TagCardMatrixState extends State<TagCardMatrix> {
   Widget buildTagCardMatrix(List<List> matrix) {
     List<Widget> matrixOfTagCard = [];
     matrix.map((rowOfTag) => buildRowOfTagCard(rowOfTag));
-    if(matrixOfTagCard.length == 0) {
+    if(matrixOfTagCard.isEmpty) {
       return Text("タグはありません", style: TextStyle(color: Colors.grey));
     }else{
       return Column(children: matrixOfTagCard);
