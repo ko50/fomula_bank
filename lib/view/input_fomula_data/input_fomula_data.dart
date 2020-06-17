@@ -11,19 +11,30 @@ import '../widgets/dialogs/input_tag_data_dialog.dart';
 
 class AddFomulaPage extends StatelessWidget {
   final int subjectIndex;
+  late Fomula fomula;
 
-  AddFomulaPage({this.subjectIndex});
+  AddFomulaPage({required this.subjectIndex, fomula}) {
+    fomula ??= Fomula();
+    this.fomula = fomula;
+  }
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TagList _tagList = fomula.tagList;
+  TextEditingController _nameController        = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _expressionController  = TextEditingController();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    String? a;
-    Fomula _newFomula;
-    TagList _tagList;
-    var _nameController       = TextEditingController();
-    var _describeController   = TextEditingController();
-    var _expressionController = TextEditingController();
+    Fomula _fomula;
+    TagList _tagList = fomula.tagList;
+    TextEditingController _nameController       = TextEditingController();
+    TextEditingController _descriptionController   = TextEditingController();
+    TextEditingController _expressionController = TextEditingController();
+    GlobalKey<FormState> _nameFormKey = GlobalKey<FormState>();
+    GlobalKey<FormState> _descriptionFormKey = GlobalKey<FormState>();
+    GlobalKey<FormState> _expressionFormKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: Text("新しい公式を追加します"),
@@ -34,7 +45,7 @@ class AddFomulaPage extends StatelessWidget {
           if(formKey.currentState.validate()) {
             _newFomula = Fomula(
               name:       _nameController.text,
-              describe:   _describeController.text,
+              description:   _descriptionController.text,
               expression: _expressionController.text,
             );
             Navigator.of(context).pop(_newFomula);
@@ -69,16 +80,28 @@ class AddFomulaPage extends StatelessWidget {
                   labelText: "公式の名前を入力してください",
                   controller: _nameController,
                   hintText: "Input Fomula Name",
+                  formKey: _formKey,
+                  validation: (v) {
+
+                  },
                 ),
                 InputFomulaDataForm(
                   labelText: "公式に説明を追加してください",
-                  controller: _describeController,
+                  controller: _descriptionController,
                   hintText: "Describe this Formula",
+                  formKey: _formKey,
+                  validation: (v) {
+
+                  },
                 ),
                 InputFomulaDataForm(
                   labelText: "公式の式部分を入力してください",
                   controller: _expressionController,
                   hintText: "Input Fomula Part of Expression",
+                  formKey: _formKey,
+                  validation: (v) {
+
+                  },
                 ),
                 TagCardMatrix(_tagList),
               ],

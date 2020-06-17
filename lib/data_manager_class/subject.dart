@@ -6,10 +6,11 @@ import './fomula.dart';
 
 class Subject {
   String name;
-  List fomulaList;
+  late List<Fomula> fomulaList;
 
-  Subject({this.name, this.fomulaList}) {
-    this.fomulaList ??= [];
+  Subject({this.name="", List<Fomula>? fomulaList}) {
+    fomulaList ??= [];
+    this.fomulaList = fomulaList;
   }
 
   Subject.fromJson(Map<String, dynamic> json)
@@ -23,8 +24,6 @@ class Subject {
 }
 
 class SubjectPrefarence {
-  Subject subject;
-
   /// ローカルから科目のリストを取得
   static Future<List<Subject>> getSubjectList() async{
     SharedPreferences pref = await SharedPreferences.getInstance();

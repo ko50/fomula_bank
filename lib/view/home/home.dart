@@ -10,8 +10,8 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 class _HomeState extends State<Home> {
-  List<Subject> subjectList;
-  String newSubjectName;
+  late List<Subject> subjectList;
+  late String newSubjectName;
 
   @override
   Widget build(BuildContext context) {

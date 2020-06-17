@@ -6,9 +6,9 @@ class InputFomulaDataForm extends StatelessWidget{
   final String hintText;
   final TextEditingController controller;
   final GlobalKey<FormState> formKey;
-  final Function validation;
+  final Function(String) validation;
 
-  InputFomulaDataForm({this.maxLine, this.labelText, this.hintText, this.controller, this.formKey, this.validation});
+  InputFomulaDataForm({this.maxLine=1, required this.labelText, required this.hintText, required this.controller, required this.formKey, required this.validation});
 
   Widget _body(FocusNode focusNode, TextEditingController controller) {
     return Row(
@@ -29,7 +29,7 @@ class InputFomulaDataForm extends StatelessWidget{
               labelText: labelText,
               hintText: hintText,
             ),
-            validator: (value) => validation(),
+            validator: (v) => validation(v),
             onFieldSubmitted: (v) {
               if(formKey.currentState.validate()) focusNode.unfocus();
             },

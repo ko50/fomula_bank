@@ -5,9 +5,7 @@ class Tag {
   String name;
   Color color;
 
-  Tag({this.name, this.color}) {
-    color ??= Colors.blue;
-  }
+  Tag({this.name="", this.color=Colors.blue});
 
   Tag.fromJson(Map<String, dynamic> json)
     : name  = json["name"],
@@ -21,11 +19,12 @@ class Tag {
 
 /// Tagクラスをまとめるクラス Tagクラスに対応させたListっぽい関数を実装している
 class TagList {
-  List<Tag> list;
-  int length;
+  late List<Tag> list;
+  late int length;
 
-  TagList({this.list}) {
+  TagList({List<Tag>? list}) {
     list ??= [];
+    this.list = list;
     this.length = list.length;
   }
 
@@ -39,11 +38,14 @@ class TagList {
     return nameList.contains(key);
   }
   /// indexを受け取り要素を消去する (普通の List.removeAt() と同じ)
-  // TODO 無限再帰になってないかこれ？
+  // TODO 無限ループになってたりしそう
   removeAt(int index) => this.list.removeAt(index);
 
+  Tag  operator [](int index) => this.list[index];
+  void operator []=(int index, Tag tag) => this;
+
   TagList.fromJson(Map<String, dynamic> json)
-    : list = (json["list"].map((tag) => Tag.fromJson(tag))).toList(); 
+    : list = (json["list"].map((tag) => Tag.fromJson(tag))).toList();
 
   Map<String, dynamic> toJson() => {
     "list" : list.map((tag) => tag.toJson()),

@@ -6,20 +6,19 @@ import './tag.dart';
 class Fomula {
   String name;
   String expression;
-  String describe;
+  String description;
   bool liked;
-  TagList tagList;
+  late TagList tagList;
 
-  Fomula({this.name, this.expression, this.describe, this.liked, this.tagList}) {
-    this.describe ??= "";
-    this.liked    ??= false;
-    this.tagList  ??=  TagList();
+  Fomula({this.name="", this.expression="", this.description="", this.liked=false, TagList? tagList}) {
+    tagList ??= TagList();
+    this.tagList = tagList;
   }
 
-  void update({String newName, String newExpression, String newDescribe, TagList newTagList}) {
+  void update(String newName, String newExpression, String newDescribe, TagList newTagList) {
     this.name       = newName;
     this.expression = newExpression;
-    this.describe   = newDescribe;
+    this.description   = newDescribe;
     this.tagList    = newTagList.sort();
   }
 
@@ -28,21 +27,22 @@ class Fomula {
   Fomula.fromJson(Map<String, dynamic> json)
     : name       = json["name"],
       expression = json["expression"],
-      describe   = json["describe"],
+      description   = json["description"],
       liked      = json["liked"],
       tagList    = TagList.fromJson(json["tagList"]);
 
   Map<String, dynamic> toJson() => {
     "name"       : name,
     "expression" : expression,
-    "describe"   : describe,
+    "description"   : description,
     "liked"      : liked,
     "tagList"    : tagList.toJson(),
   };
 }
 
-
+/*
 class Variable {
   String name;
   String definition;
 }
+*/

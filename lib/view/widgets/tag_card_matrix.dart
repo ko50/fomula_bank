@@ -17,12 +17,12 @@ class TagCardMatrix extends StatefulWidget {
 }
 class _TagCardMatrixState extends State<TagCardMatrix> {
   TagList tagList;
-  List<Widget> cardMatrix;
+  List<Widget> cardMatrix = [];
 
   _TagCardMatrixState(this.tagList);
 
   Future showAddNewTagDialog() async{
-    Tag newTag = await showDialog(
+    Tag? newTag = await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => InputTagDataDialog(),
@@ -34,7 +34,7 @@ class _TagCardMatrixState extends State<TagCardMatrix> {
   }
 
   Future showConfirmDeleteTag(context, int index) async{
-    bool isDelete = await showDialog(
+    bool? isDelete = await showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) => ConfirmDeleteTagDialog()
@@ -47,8 +47,8 @@ class _TagCardMatrixState extends State<TagCardMatrix> {
     }
   }
 
-  List<List> constructTagCardMatrix() {
-    List<List> matrixOfTag = [[]];
+  List<List<Tag>> constructTagCardMatrix() {
+    List<List<Tag>> matrixOfTag = [[]];
     double width = 0;
     tagList.list.forEach((tag) {
       width += (tag.name.length * 8) + 10;
@@ -68,7 +68,7 @@ class _TagCardMatrixState extends State<TagCardMatrix> {
   }
 
   Future showEditTagDialog(context, int index, Tag tag) async{
-    Tag editedTag = await showDialog(
+    Tag? editedTag = await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => InputTagDataDialog(
@@ -78,19 +78,22 @@ class _TagCardMatrixState extends State<TagCardMatrix> {
     );
     if(editedTag == null) return;
     setState(() {
-      tagList.list[index] = editedTag;
+      tagList[index] = editedTag;
     });
   }
 
-  Row buildRowOfTagCard(List rowOfTag) {
-    rowOfTag.forEach((tag) => TagCard(
-      title: tag.name,
-      color: tag.color,
-    ));
-    return Row(children: rowOfTag);
+  Row buildRowOfTagCard(List<Tag> rowOfTag) {
+    List<TagCard> _rowOfTtagCard = rowOfTag.map((tag) {
+      TagCard tc = TagCard(
+        title: tag.name,
+        color: tag.color,
+      );
+      return tc;
+    }).toList();
+    return Row(children: _rowOfTtagCard);
   }
 
-  Widget buildTagCardMatrix(List<List> matrix) {
+  Widget buildTagCardMatrix(List<List<Tag>> matrix) {
     List<Widget> matrixOfTagCard = [];
     matrix.map((rowOfTag) => buildRowOfTagCard(rowOfTag));
     if(matrixOfTagCard.isEmpty) {
@@ -102,7 +105,7 @@ class _TagCardMatrixState extends State<TagCardMatrix> {
 
   @override
   Widget build(BuildContext context) {
-    List<List> matrix = constructTagCardMatrix();
+    List<List<Tag>> matrix = constructTagCardMatrix();
     double height = (matrix.length * 15).toDouble(); if(height==0) height = 15;
     return Container(
       height: height,
