@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
                               List fomulaList = subject.fomulaList;
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) => Preview(subject: subject, fomulaList: fomulaList, parentIndex: index)
+                                  builder: (BuildContext context) => Preview(subject: subject, parentIndex: index)
                                 ),
                               );
                             },

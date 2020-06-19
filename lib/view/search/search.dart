@@ -10,8 +10,8 @@ class Search extends StatefulWidget {
   _SearchState createState() => _SearchState();
 }
 class _SearchState extends State<Search> {
-  List<Subject> subjectList;
-  List<String> searchKeys;
+  late List<Subject> subjectList;
+  late List<String> searchKeys;
   List result = [];
 
   List search() {

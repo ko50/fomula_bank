@@ -10,10 +10,12 @@ import '../../data_manager_class/fomula.dart';
 
 class Preview extends StatefulWidget {
   final Subject subject;
-  final List fomulaList;
   final int parentIndex;
+  late final List fomulaList;
 
-  Preview({this.subject, this.fomulaList, this.parentIndex});
+  Preview({required this.subject, required this.parentIndex}) {
+    this.fomulaList = subject.fomulaList;
+  }
 
   @override
   _PreviewState createState() => _PreviewState(subject, fomulaList, parentIndex);
@@ -61,7 +63,7 @@ class _PreviewState extends State<Preview> {
               onLongPress: () async{
                 isDelete = await confirmDeleteFomulaDialog(context);
                 if(isDelete && !fomula.liked) {
-                  List subjectList = await SubjectPrefarence.getSubjectList();
+                  List<Subject> subjectList = await SubjectPrefarence.getSubjectList();
                   setState(() {
                     subject.fomulaList.removeAt(index);
                   });
@@ -96,7 +98,7 @@ class _PreviewState extends State<Preview> {
                 setState(() {
                   subject.fomulaList.add(newFomula);
                 });
-                List subjectList = await SubjectPrefarence.getSubjectList();
+                List<Subject> subjectList = await SubjectPrefarence.getSubjectList();
                 subjectList[parentIndex] = subject;
                 SubjectPrefarence.saveSubjectList(subjectList);
               }

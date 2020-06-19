@@ -1,3 +1,5 @@
+import 'dart:ffi/ffi.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../data_manager_class/tag.dart';
@@ -34,6 +36,7 @@ class _TagCardMatrixState extends State<TagCardMatrix> {
   }
 
   Future showConfirmDeleteTag(context, int index) async{
+    int i = 0;
     bool? isDelete = await showDialog(
       barrierDismissible: false,
       context: context,
@@ -85,6 +88,7 @@ class _TagCardMatrixState extends State<TagCardMatrix> {
   Row buildRowOfTagCard(List<Tag> rowOfTag) {
     List<TagCard> _rowOfTtagCard = rowOfTag.map((tag) {
       TagCard tc = TagCard(
+        index: ,
         title: tag.name,
         color: tag.color,
       );

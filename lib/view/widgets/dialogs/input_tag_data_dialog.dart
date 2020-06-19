@@ -7,7 +7,7 @@ class InputTagDataDialog extends StatefulWidget {
   final String name;
   final Color color;
 
-  InputTagDataDialog({this.name, this.color});
+  InputTagDataDialog({this.name="", this.color=Colors.white});
 
   @override
   _InputTagDataDialogState createState() => _InputTagDataDialogState(name, color);
@@ -16,10 +16,7 @@ class _InputTagDataDialogState extends State<InputTagDataDialog> {
   String name;
   Color color;
 
-  _InputTagDataDialogState(this.name, this.color) {
-    name ??= "";
-    color ??= Colors.white;
-  }
+  _InputTagDataDialogState(this.name, this.color);
 
   // 正しい定義場所がわからないので誰か教えてください
   FocusNode nameFocus   = FocusNode();

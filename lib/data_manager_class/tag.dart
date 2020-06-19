@@ -38,8 +38,13 @@ class TagList {
     return nameList.contains(key);
   }
   /// indexを受け取り要素を消去する (普通の List.removeAt() と同じ)
-  // TODO 無限ループになってたりしそう
   removeAt(int index) => this.list.removeAt(index);
+  /// object_idを受け取り[this.list]からのインデックスを取得します
+  indexOf(int tag) {
+    for(Tag tagInList in this.list) {
+      if(identical(tag, tagInList)) return this.list.indexOf(tagInList);
+    }
+  }
 
   Tag  operator [](int index) => this.list[index];
   void operator []=(int index, Tag tag) => this;

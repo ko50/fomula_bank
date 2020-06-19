@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 class TagCard extends StatelessWidget {
+  final int index;
   final String title;
   final Color color;
-  final Function onTap;
-  final Function onLongPress;
 
-  TagCard({this.title, this.color, this.onTap, this.onLongPress});
+  TagCard({required this.index, this.title="", this.color=Colors.blue});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +31,12 @@ class TagCard extends StatelessWidget {
               )
             ],
           ),
-          onTap: onTap,
-          onLongPress: onLongPress,
+          onTap: () {
+            
+          },
+          onLongPress: () {
+
+          },
         ),
       ),
     );

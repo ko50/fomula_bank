@@ -11,30 +11,24 @@ import '../widgets/dialogs/input_tag_data_dialog.dart';
 
 class AddFomulaPage extends StatelessWidget {
   final int subjectIndex;
-  late Fomula fomula;
+  late final Fomula fomula;
+  late final TagList tagList;
 
-  AddFomulaPage({required this.subjectIndex, fomula}) {
+  AddFomulaPage({required this.subjectIndex, Fomula? fomula}) {
     fomula ??= Fomula();
     this.fomula = fomula;
+    this.tagList = fomula.tagList;
   }
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TagList _tagList = fomula.tagList;
-  TextEditingController _nameController        = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _expressionController  = TextEditingController();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController        = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _expressionController  = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    Fomula _fomula;
+    Fomula _inputedFomula;
     TagList _tagList = fomula.tagList;
-    TextEditingController _nameController       = TextEditingController();
-    TextEditingController _descriptionController   = TextEditingController();
-    TextEditingController _expressionController = TextEditingController();
-    GlobalKey<FormState> _nameFormKey = GlobalKey<FormState>();
-    GlobalKey<FormState> _descriptionFormKey = GlobalKey<FormState>();
-    GlobalKey<FormState> _expressionFormKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: Text("新しい公式を追加します"),
@@ -42,13 +36,13 @@ class AddFomulaPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.save),
         onPressed: () async{
-          if(formKey.currentState.validate()) {
-            _newFomula = Fomula(
+          if(_formKey.currentState.validate()) {
+            _inputedFomula = Fomula(
               name:       _nameController.text,
               description:   _descriptionController.text,
               expression: _expressionController.text,
             );
-            Navigator.of(context).pop(_newFomula);
+            Navigator.of(context).pop(_inputedFomula);
           }else{
             await showDialog(
               context: context,
