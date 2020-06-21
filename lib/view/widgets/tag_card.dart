@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 
+import '../../data_manager_class/tag.dart';
+
 class TagCard extends StatelessWidget {
   final int index;
-  final String title;
-  final Color color;
+  final Tag tag;
+  late final String title;
+  late final Color color;
 
-  TagCard({required this.index, this.title="", this.color=Colors.blue});
+  TagCard({required this.index, required this.tag}) {
+    this.title = tag.name;
+    this.color = tag.color;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: (title.length*8 + 10).toDouble(),
+      width: (title.length * 8 + 10).toDouble(),
       child: Card(
         shadowColor: color,
         margin: EdgeInsets.all(8.0),
@@ -31,12 +37,8 @@ class TagCard extends StatelessWidget {
               )
             ],
           ),
-          onTap: () {
-            
-          },
-          onLongPress: () {
-
-          },
+          onTap: () {},
+          onLongPress: () {},
         ),
       ),
     );

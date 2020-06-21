@@ -7,8 +7,6 @@ import '../../data_manager_class/tag.dart';
 
 import '../widgets/tag_card_matrix.dart';
 
-import '../widgets/dialogs/input_tag_data_dialog.dart';
-
 class AddFomulaPage extends StatelessWidget {
   final int subjectIndex;
   late final Fomula fomula;
@@ -20,9 +18,9 @@ class AddFomulaPage extends StatelessWidget {
     this.tagList = fomula.tagList;
   }
 
-  final TextEditingController _nameController        = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _expressionController  = TextEditingController();
+  final TextEditingController _expressionController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -35,22 +33,23 @@ class AddFomulaPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.save),
-        onPressed: () async{
-          if(_formKey.currentState.validate()) {
+        onPressed: () async {
+          if (_formKey.currentState.validate()) {
             _inputedFomula = Fomula(
-              name:       _nameController.text,
-              description:   _descriptionController.text,
+              name: _nameController.text,
+              description: _descriptionController.text,
               expression: _expressionController.text,
             );
             Navigator.of(context).pop(_inputedFomula);
-          }else{
+          } else {
             await showDialog(
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text("無効な値が入力されました"),
-                  content: Text("パラメーターは一つも空白が無いようにしてください"), // TODO このページをちゃんとつくる(特にTag関連)
+                  content: Text(
+                      "パラメーターは一つも空白が無いようにしてください"), // TODO このページをちゃんとつくる(特にTag関連)
                   actions: <Widget>[
                     FlatButton(
                       child: Text("ok"),
@@ -60,7 +59,7 @@ class AddFomulaPage extends StatelessWidget {
                     ),
                   ],
                 );
-              }
+              },
             );
           }
         },
@@ -76,7 +75,9 @@ class AddFomulaPage extends StatelessWidget {
                   hintText: "Input Fomula Name",
                   formKey: _formKey,
                   validation: (v) {
-
+                    if (v.isEmpty)
+                      return "空白は不可です";
+                    else if (v.length > 15) return "長すぎます 15文字以下にして下さい";
                   },
                 ),
                 InputFomulaDataForm(
@@ -85,7 +86,9 @@ class AddFomulaPage extends StatelessWidget {
                   hintText: "Describe this Formula",
                   formKey: _formKey,
                   validation: (v) {
-
+                    if (v.isEmpty)
+                      return "空白は不可です";
+                    else if (v.length > 100) return "長すぎます 100文字以下にして下さい";
                   },
                 ),
                 InputFomulaDataForm(
@@ -94,10 +97,12 @@ class AddFomulaPage extends StatelessWidget {
                   hintText: "Input Fomula Part of Expression",
                   formKey: _formKey,
                   validation: (v) {
-
+                    if (v.isEmpty)
+                      return "空白は不可です";
+                    else if (v.length > 30) return "長すぎます 30文字以下にして下さい";
                   },
                 ),
-                TagCardMatrix(_tagList),
+                TagCardMatrix(_tagList), // ここをDialog方式にして、ボタン二つだけの表示にする
               ],
             ),
           ),

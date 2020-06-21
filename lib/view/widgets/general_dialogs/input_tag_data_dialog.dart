@@ -34,7 +34,7 @@ class _InputTagDataDialogState extends State<InputTagDataDialog> {
 
   /// 16進数で与えられるカラーコードを10進数に置き換えます 命名
   String decodeColorCode(String code) {
-    // TODO tryParseにして
+    // TODO tryParse
     int decimalCode = int.parse("0x$code");
 
     return decimalCode.toString();
