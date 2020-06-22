@@ -41,7 +41,7 @@ Future<String> inputSubjectDialog(var context) async{
 
 /// 科目を消去するか確認をするダイアログを表示します
 Future<bool> confirmDeleteSubjectDialog(var context) async{
-  bool result = await showDialog(
+  bool? result = await showDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
@@ -70,7 +70,7 @@ Future<bool> confirmDeleteSubjectDialog(var context) async{
 
 /// 公式を削除するときの確認をとるダイアログを表示します
 Future<bool> confirmDeleteFomulaDialog(var context) async{
-  bool result = await showDialog(
+  bool? result = await showDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
