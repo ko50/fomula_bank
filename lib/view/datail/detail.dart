@@ -29,7 +29,7 @@ class _DatailState extends State<Datail> {
   late TextEditingController descriptionController;
   late TextEditingController expressionController;
 
-  Widget fomulaDataDisplayer({double height, double fontSize, String title, String message}) {
+  Widget fomulaDataDisplayer({double? height, double? fontSize, String? title, String? message}) {
     return Container(
       padding: EdgeInsets.all(12.0),
       height: height,
@@ -62,7 +62,7 @@ class _DatailState extends State<Datail> {
     );
   }
 
-  Widget inputFomulaDataForm({double height=200, String induction, TextEditingController controller, String hintText}) {
+  Widget inputFomulaDataForm({double height=200, String? induction, TextEditingController? controller, String? hintText}) {
     return Container(
       padding: EdgeInsets.all(12.0),
       height: height,
@@ -103,7 +103,7 @@ class _DatailState extends State<Datail> {
       return FloatingActionButton(
         child: Icon(Icons.save),
         onPressed: () async{
-          if([nameController.text.trim(), descriptionController.text.trim(), expressionController.text.trim(), tagListController.text.trim()].contains("")) {
+          if([nameController.text.trim(), descriptionController.text.trim(), expressionController.text.trim()].contains("")) {
             await showDialog(
               context: context,
               barrierDismissible: false,
@@ -127,7 +127,6 @@ class _DatailState extends State<Datail> {
               name:       nameController.text,
               description:   descriptionController.text,
               expression: expressionController.text,
-              tagList:    tagListController.text.split(" "),
             );
             parentSubject.fomulaList[childIndex] = newFomulaData;
             subjectList = await SubjectPrefarence.getSubjectList();
@@ -140,7 +139,7 @@ class _DatailState extends State<Datail> {
           }
         },
       );
-    }else return null;
+    }else return FloatingActionButton(onPressed: () {},);
   }
 
   Widget mainWidget() {

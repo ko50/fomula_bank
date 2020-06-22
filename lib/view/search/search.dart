@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../home/home.dart';
 import '../datail/detail.dart';
 import '../widgets/drawer.dart';
 import '../../data_manager_class/subject.dart';
@@ -53,7 +54,7 @@ class _SearchState extends State<Search> {
               ),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (BuildContext context) => Datail(/*TODO FomulaにparentSubjectを実装*/))
+                  MaterialPageRoute(builder: (BuildContext context) => Home())
                 );
               },
             ),
