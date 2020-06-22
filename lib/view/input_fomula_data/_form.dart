@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 
-class InputFomulaDataForm extends StatelessWidget{
+class InputFomulaDataForm extends StatelessWidget {
+  final int maxCharCount;
   final int maxLine;
   final String labelText;
   final String hintText;
   final TextEditingController controller;
   final GlobalKey<FormState> formKey;
-  final Function(String) validation;
 
-  InputFomulaDataForm({this.maxLine=1, required this.labelText, required this.hintText, required this.controller, required this.formKey, required this.validation});
+  InputFomulaDataForm({
+    required this.maxCharCount,
+    this.maxLine = 1,
+    required this.labelText,
+    required this.hintText,
+    required this.controller,
+    required this.formKey,
+  });
 
   Widget _body(FocusNode focusNode, TextEditingController controller) {
     return Row(
@@ -29,9 +36,16 @@ class InputFomulaDataForm extends StatelessWidget{
               labelText: labelText,
               hintText: hintText,
             ),
-            validator: (v) => validation(v),
+            validator: (v) {
+              if (v.isEmpty)
+                return "空白は不可です";
+              else if (v.length > maxCharCount)
+                return "長すぎます ${maxCharCount}文字以下にして下さい";
+              else
+                return "";
+            },
             onFieldSubmitted: (v) {
-              if(formKey.currentState.validate()) focusNode.unfocus();
+              if (formKey.currentState.validate()) focusNode.unfocus();
             },
           ),
         ),
@@ -46,9 +60,7 @@ class InputFomulaDataForm extends StatelessWidget{
     return Form(
       key: formKey,
       child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: _body(_focusNode, _controller)
-      ),
+          padding: EdgeInsets.all(8.0), child: _body(_focusNode, _controller)),
     );
   }
 }

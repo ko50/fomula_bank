@@ -8,6 +8,7 @@ class DisplayTagDialog extends StatelessWidget {
 
   DisplayTagDialog({required this.tagList});
 
+  @override
   Widget build(BuildContext context) {
     if (tagList.isEmpty()) {
       return Center(
