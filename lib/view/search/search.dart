@@ -54,7 +54,7 @@ class _SearchState extends State<Search> {
               ),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (BuildContext context) => Home())
+                  MaterialPageRoute<Widget>(builder: (BuildContext context) => Home())
                 );
               },
             ),

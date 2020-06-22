@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
                             onTap: () {
                               List fomulaList = subject.fomulaList;
                               Navigator.of(context).push(
-                                MaterialPageRoute(
+                                MaterialPageRoute<Widget>(
                                   builder: (BuildContext context) => Preview(subject: subject, parentIndex: index)
                                 ),
                               );

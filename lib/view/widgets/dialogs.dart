@@ -23,7 +23,7 @@ Future<String> inputSubjectDialog(var context) async{
           FlatButton(
             child: Text("cancel"),
             onPressed: () {
-              Navigator.of(context).pop(null);
+              Navigator.of(context).pop();
             },
           ),
           FlatButton(

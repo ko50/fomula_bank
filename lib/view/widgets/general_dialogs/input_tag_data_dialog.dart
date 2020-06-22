@@ -102,7 +102,7 @@ class _InputTagDataDialogState extends State<InputTagDataDialog> {
               validator: (value) {
                 if(value.length > 5) return ("5文字以内で入力してください");
                 else if(value.isEmpty) return ("タグ名を入力してください");
-                else return null;
+                else return "";
               },
               onFieldSubmitted: (v) {
                 if(nameFormKey.currentState.validate()) {
@@ -137,7 +137,7 @@ class _InputTagDataDialogState extends State<InputTagDataDialog> {
         },
         validator: (value) {
           if(value.isEmpty || int.tryParse(value) == null || !(int.parse(value) >= 0 && int.parse(value) <= 255)) return ("異常な値");
-          else return null;
+          else return "";
         },
         decoration: InputDecoration(
           labelText: labelText,

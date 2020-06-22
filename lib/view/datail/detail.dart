@@ -29,7 +29,7 @@ class _DatailState extends State<Datail> {
   late TextEditingController descriptionController;
   late TextEditingController expressionController;
 
-  Widget fomulaDataDisplayer({double? height, double? fontSize, String? title, String? message}) {
+  Widget fomulaDataDisplayer({double height=100, double fontSize=20, String title="", String message=""}) {
     return Container(
       padding: EdgeInsets.all(12.0),
       height: height,
@@ -62,7 +62,7 @@ class _DatailState extends State<Datail> {
     );
   }
 
-  Widget inputFomulaDataForm({double height=200, String? induction, TextEditingController? controller, String? hintText}) {
+  Widget inputFomulaDataForm({double height=200, String induction="", required TextEditingController controller, String hintText=""}) {
     return Container(
       padding: EdgeInsets.all(12.0),
       height: height,

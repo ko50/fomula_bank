@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
       ),
       home: Home(),
       routes: <String, WidgetBuilder>{
-        '/home'    : (BuildContext context) => Home(),
-        '/search'  : (BuildContext context) => Search(),
+        '/home': (BuildContext context) => Home(),
+        '/search': (BuildContext context) => Search(),
         '/settings': (BuildContext context) => Settings(),
       },
     );

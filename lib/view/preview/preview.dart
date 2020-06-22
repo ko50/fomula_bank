@@ -52,7 +52,7 @@ class _PreviewState extends State<Preview> {
               ),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (BuildContext context) => Datail(
+                  MaterialPageRoute<Widget>(builder: (BuildContext context) => Datail(
                     childIndex: index,
                     parentIndex: parentIndex,
                     parentSubject: subject,
