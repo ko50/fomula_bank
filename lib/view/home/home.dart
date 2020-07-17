@@ -9,6 +9,7 @@ class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
+
 class _HomeState extends State<Home> {
   late List<Subject> subjectList;
   late String newSubjectName;
@@ -22,35 +23,34 @@ class _HomeState extends State<Home> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () async{
+            onPressed: () async {
               newSubjectName = await inputSubjectDialog(context);
-              if(newSubjectName!=null) {
-                bool isValid = newSubjectName.trim()!="";
-                for(Subject subject in subjectList) {
-                  if(subject.name==newSubjectName) isValid = false;
+              if (newSubjectName != null) {
+                bool isValid = newSubjectName.trim() != "";
+                for (Subject subject in subjectList) {
+                  if (subject.name == newSubjectName) isValid = false;
                 }
-                if(isValid){
+                if (isValid) {
                   setState(() {
                     subjectList.add(Subject(name: newSubjectName));
                   });
                   await SubjectPrefarence.saveSubjectList(subjectList);
-                }else{
+                } else {
                   await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: Text("無効な科目名が入力されました"),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text("ok"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    }
-                  );
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text("無効な科目名が入力されました"),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text("ok"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
                 }
               }
             },
@@ -61,25 +61,24 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           FutureBuilder(
             future: SubjectPrefarence.getSubjectList(),
-            builder: (BuildContext context, AsyncSnapshot<List<Subject>> snapshot) {
-              if(!snapshot.hasData) {
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Subject>> snapshot) {
+              if (!snapshot.hasData) {
                 return Text("データがありません\nデータの通信に失敗した可能性があります");
-              }else{
+              } else {
                 subjectList = snapshot.data;
-                if(subjectList.length==0) {
+                if (subjectList.length == 0) {
                   return Padding(
                     padding: EdgeInsets.only(top: 12.0),
                     child: Center(
-                      child: Text(
-                        "科目が一つもありません\n画面上部のボタンから追加してください",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black54,
-                        )
-                      ),
+                      child: Text("科目が一つもありません\n画面上部のボタンから追加してください",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black54,
+                          )),
                     ),
                   );
-                }else{
+                } else {
                   return Expanded(
                     child: ListView.builder(
                       itemBuilder: (BuildContext context, int index) {
@@ -87,26 +86,32 @@ class _HomeState extends State<Home> {
                         return Container(
                           child: ListTile(
                             title: Text(subject.name),
-                            trailing: Text("This Subject has\n${subject.fomulaList.length} Fomulas"),
+                            trailing: Text(
+                                "This Subject has\n${subject.formulaList.length} formulas"),
                             onTap: () {
-                              List fomulaList = subject.fomulaList;
+                              List formulaList = subject.formulaList;
                               Navigator.of(context).push(
                                 MaterialPageRoute<Widget>(
-                                  builder: (BuildContext context) => Preview(subject: subject, parentIndex: index)
-                                ),
+                                    builder: (BuildContext context) => Preview(
+                                        subject: subject, parentIndex: index)),
                               );
                             },
-                            onLongPress: () async{
-                              bool isDelete = await confirmDeleteSubjectDialog(context);
-                              if(isDelete) {
+                            onLongPress: () async {
+                              bool isDelete =
+                                  await confirmDeleteSubjectDialog(context);
+                              if (isDelete) {
                                 setState(() {
                                   subjectList.removeAt(index);
                                 });
-                                await SubjectPrefarence.saveSubjectList(subjectList);
+                                await SubjectPrefarence.saveSubjectList(
+                                    subjectList);
                               }
                             },
                           ),
-                          decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 1.0, color: Colors.grey))),
                         );
                       },
                       itemCount: subjectList.length,

@@ -4,12 +4,13 @@ import '../home/home.dart';
 import '../datail/detail.dart';
 import '../widgets/drawer.dart';
 import '../../data_manager_class/subject.dart';
-import '../../data_manager_class/fomula.dart';
+import '../../data_manager_class/formula.dart';
 
 class Search extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
 }
+
 class _SearchState extends State<Search> {
   late List<Subject> subjectList;
   late List<String> searchKeys;
@@ -19,12 +20,12 @@ class _SearchState extends State<Search> {
     List _result = [];
     subjectList.forEach((subject) {
       searchKeys.forEach((key) {
-        for(Fomula fomula in subject.fomulaList) {
-          if(key==fomula.name) {
-            _result.add(fomula);
+        for (formula formula in subject.formulaList) {
+          if (key == formula.name) {
+            _result.add(formula);
             continue;
           }
-          if(fomula.tagList.contains(key)) _result.add(fomula);
+          if (formula.tagList.contains(key)) _result.add(formula);
         }
       });
     });
@@ -32,33 +33,34 @@ class _SearchState extends State<Search> {
   }
 
   Widget searchedResultListView() {
-    if(result.length==0) {
+    if (result.length == 0) {
       return Text("検索結果は一つもありませんでした");
-    }else{
+    } else {
       return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          Fomula fomula = result[index];
-          Color color = fomula.liked ? Colors.yellow : Colors.grey;
+          formula formula = result[index];
+          Color color = formula.liked ? Colors.yellow : Colors.grey;
           return Container(
             child: ListTile(
-              title: Text("${fomula.name}"),
+              title: Text("${formula.name}"),
               trailing: IconButton(
                 color: color,
                 onPressed: () {
-                  fomula.changeLike(!fomula.liked);
+                  formula.changeLike(!formula.liked);
                   setState(() {
-                    color = fomula.liked ? Colors.yellow : Colors.grey;
+                    color = formula.liked ? Colors.yellow : Colors.grey;
                   });
                 },
                 icon: Icon(Icons.star),
               ),
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<Widget>(builder: (BuildContext context) => Home())
-                );
+                Navigator.of(context).push(MaterialPageRoute<Widget>(
+                    builder: (BuildContext context) => Home()));
               },
             ),
-            decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
+            decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
           );
         },
         itemCount: result.length,
@@ -87,12 +89,13 @@ class _SearchState extends State<Search> {
                 padding: EdgeInsets.all(4.0),
                 child: Row(
                   children: <Widget>[
-                      Expanded(
-                        child: TextField(
-                          controller: controller,
-                          decoration: InputDecoration.collapsed(hintText: "Search your fomula"),
-                        ),
+                    Expanded(
+                      child: TextField(
+                        controller: controller,
+                        decoration: InputDecoration.collapsed(
+                            hintText: "Search your formula"),
                       ),
+                    ),
                     IconButton(
                       icon: Icon(Icons.search),
                       onPressed: () {
@@ -106,19 +109,23 @@ class _SearchState extends State<Search> {
                 ),
               ),
             ),
-            decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
+            decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
           ),
           FutureBuilder(
-            future: SubjectPrefarence.getSubjectList(),
-            builder: (BuildContext context, AsyncSnapshot<List<Subject>> snapshot) {
-              if(!snapshot.hasData) {
-                return Text("データがありません");
-              }else{
-                subjectList = snapshot.data;
-                return Expanded(child: searchedResultListView(),);
-              }
-            }
-          ),
+              future: SubjectPrefarence.getSubjectList(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Subject>> snapshot) {
+                if (!snapshot.hasData) {
+                  return Text("データがありません");
+                } else {
+                  subjectList = snapshot.data;
+                  return Expanded(
+                    child: searchedResultListView(),
+                  );
+                }
+              }),
         ],
       ),
     );

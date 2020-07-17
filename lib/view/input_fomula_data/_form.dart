@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class InputFomulaDataForm extends StatelessWidget {
+class InputformulaDataForm extends StatelessWidget {
   final int maxCharCount;
   final int maxLine;
   final String labelText;
@@ -8,7 +8,7 @@ class InputFomulaDataForm extends StatelessWidget {
   final TextEditingController controller;
   final GlobalKey<FormState> formKey;
 
-  InputFomulaDataForm({
+  InputformulaDataForm({
     required this.maxCharCount,
     this.maxLine = 1,
     required this.labelText,

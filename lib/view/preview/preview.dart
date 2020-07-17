@@ -1,104 +1,113 @@
 import 'package:flutter/material.dart';
 
-import '../input_fomula_data/input_fomula_data.dart';
+import '../input_formula_data/input_formula_data.dart';
 import '../datail/detail.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/drawer.dart';
 
 import '../../data_manager_class/subject.dart';
-import '../../data_manager_class/fomula.dart';
+import '../../data_manager_class/formula.dart';
 
 class Preview extends StatefulWidget {
   final Subject subject;
   final int parentIndex;
-  late final List fomulaList;
+  late final List formulaList;
 
   Preview({required this.subject, required this.parentIndex}) {
-    this.fomulaList = subject.fomulaList;
+    this.formulaList = subject.formulaList;
   }
 
   @override
-  _PreviewState createState() => _PreviewState(subject, fomulaList, parentIndex);
+  _PreviewState createState() =>
+      _PreviewState(subject, formulaList, parentIndex);
 }
+
 class _PreviewState extends State<Preview> {
   Subject subject;
-  List fomulaList;
+  List formulaList;
   int parentIndex;
 
-  _PreviewState(this.subject, this.fomulaList, this.parentIndex);
+  _PreviewState(this.subject, this.formulaList, this.parentIndex);
 
-  Widget fomulaListView() {
-    if(fomulaList.length==0) {
+  Widget formulaListView() {
+    if (formulaList.length == 0) {
       return Center(child: Text("公式が一つもありません"));
-    }else{
+    } else {
       return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          Fomula fomula = fomulaList[index];
-          Color color = fomula.liked ? Colors.yellow : Colors.grey;
+          formula formula = formulaList[index];
+          Color color = formula.liked ? Colors.yellow : Colors.grey;
           bool isDelete;
           return Container(
             child: ListTile(
-              title: Text("${fomula.name}"),
-              subtitle: Text("${fomula.expression}\ntag: ${fomula.tagList}", style: TextStyle(fontSize: 12),),
+              title: Text("${formula.name}"),
+              subtitle: Text(
+                "${formula.expression}\ntag: ${formula.tagList}",
+                style: TextStyle(fontSize: 12),
+              ),
               trailing: IconButton(
                 color: color,
                 onPressed: () {
-                  fomula.changeLike(fomula.liked);
+                  formula.changeLike(formula.liked);
                   setState(() {
-                    color = fomula.liked ? Colors.yellow : Colors.grey;
+                    color = formula.liked ? Colors.yellow : Colors.grey;
                   });
                 },
                 icon: Icon(Icons.star),
               ),
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<Widget>(builder: (BuildContext context) => Datail(
-                    childIndex: index,
-                    parentIndex: parentIndex,
-                    parentSubject: subject,
-                    fomula: fomula,
-                  ))
-                );
+                Navigator.of(context).push(MaterialPageRoute<Widget>(
+                    builder: (BuildContext context) => Datail(
+                          childIndex: index,
+                          parentIndex: parentIndex,
+                          parentSubject: subject,
+                          formula: formula,
+                        )));
               },
-              onLongPress: () async{
-                isDelete = await confirmDeleteFomulaDialog(context);
-                if(isDelete && !fomula.liked) {
-                  List<Subject> subjectList = await SubjectPrefarence.getSubjectList();
+              onLongPress: () async {
+                isDelete = await confirmDeleteformulaDialog(context);
+                if (isDelete && !formula.liked) {
+                  List<Subject> subjectList =
+                      await SubjectPrefarence.getSubjectList();
                   setState(() {
-                    subject.fomulaList.removeAt(index);
+                    subject.formulaList.removeAt(index);
                   });
                   subjectList[parentIndex] = subject;
                   await SubjectPrefarence.saveSubjectList(subjectList);
                 }
               },
             ),
-            decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
+            decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
           );
         },
-        itemCount: fomulaList.length,
+        itemCount: formulaList.length,
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: GeneralDrawer(),
       appBar: AppBar(
-        title: Text("Preview Fomulas in ${subject.name}"),
+        title: Text("Preview formulas in ${subject.name}"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () async{
-              Fomula newFomula = await Navigator.of(context).push(
+            onPressed: () async {
+              formula newformula = await Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (BuildContext context) => AddFomulaPage(subjectIndex: parentIndex)
-                ),
+                    builder: (BuildContext context) =>
+                        AddformulaPage(subjectIndex: parentIndex)),
               );
-              if(newFomula!=null) {
+              if (newformula != null) {
                 setState(() {
-                  subject.fomulaList.add(newFomula);
+                  subject.formulaList.add(newformula);
                 });
-                List<Subject> subjectList = await SubjectPrefarence.getSubjectList();
+                List<Subject> subjectList =
+                    await SubjectPrefarence.getSubjectList();
                 subjectList[parentIndex] = subject;
                 SubjectPrefarence.saveSubjectList(subjectList);
               }
@@ -109,7 +118,7 @@ class _PreviewState extends State<Preview> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: fomulaListView(),
+            child: formulaListView(),
           ),
         ],
       ),

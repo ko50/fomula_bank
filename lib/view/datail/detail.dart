@@ -1,35 +1,46 @@
 import 'package:flutter/material.dart';
 
-import '../../data_manager_class/fomula.dart';
+import '../../data_manager_class/formula.dart';
 import '../../data_manager_class/subject.dart';
 
 class Datail extends StatefulWidget {
   final int parentIndex;
   final Subject parentSubject;
   final int childIndex;
-  final Fomula fomula;
+  final formula formula;
 
-  Datail({required this.parentIndex, required this.parentSubject, required this.childIndex, required this.fomula});
+  Datail(
+      {required this.parentIndex,
+      required this.parentSubject,
+      required this.childIndex,
+      required this.formula});
 
   @override
-  _DatailState createState() => _DatailState(parentIndex, parentSubject, childIndex, fomula);
+  _DatailState createState() =>
+      _DatailState(parentIndex, parentSubject, childIndex, formula);
 }
+
 class _DatailState extends State<Datail> {
   int parentIndex;
   Subject parentSubject;
   int childIndex;
-  Fomula fomula;
+  formula formula;
 
-  _DatailState(this.parentIndex, this.parentSubject, this.childIndex, this.fomula);
+  _DatailState(
+      this.parentIndex, this.parentSubject, this.childIndex, this.formula);
 
   late List<Subject> subjectList;
-  late Fomula newFomulaData;
+  late formula newformulaData;
   late bool isEditing = false;
   late TextEditingController nameController;
   late TextEditingController descriptionController;
   late TextEditingController expressionController;
 
-  Widget fomulaDataDisplayer({double height=100, double fontSize=20, String title="", String message=""}) {
+  Widget formulaDataDisplayer(
+      {double height = 100,
+      double fontSize = 20,
+      String title = "",
+      String message = ""}) {
     return Container(
       padding: EdgeInsets.all(12.0),
       height: height,
@@ -44,7 +55,9 @@ class _DatailState extends State<Datail> {
                 ),
               ],
             ),
-            decoration: BoxDecoration(border: Border.all(width: 1.0, color: Colors.grey), borderRadius: BorderRadius.circular(4.0)),
+            decoration: BoxDecoration(
+                border: Border.all(width: 1.0, color: Colors.grey),
+                borderRadius: BorderRadius.circular(4.0)),
           ),
           Container(
             padding: EdgeInsets.all(8.0),
@@ -58,11 +71,16 @@ class _DatailState extends State<Datail> {
           ),
         ],
       ),
-      decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
     );
   }
 
-  Widget inputFomulaDataForm({double height=200, String induction="", required TextEditingController controller, String hintText=""}) {
+  Widget inputformulaDataForm(
+      {double height = 200,
+      String induction = "",
+      required TextEditingController controller,
+      String hintText = ""}) {
     return Container(
       padding: EdgeInsets.all(12.0),
       height: height,
@@ -73,11 +91,16 @@ class _DatailState extends State<Datail> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text(induction, style: TextStyle(fontSize: 22,)),
+                  child: Text(induction,
+                      style: TextStyle(
+                        fontSize: 22,
+                      )),
                 ),
               ],
             ),
-            decoration: BoxDecoration(border: Border.all(width: 1.0, color: Colors.grey), borderRadius: BorderRadius.circular(4.0)),
+            decoration: BoxDecoration(
+                border: Border.all(width: 1.0, color: Colors.grey),
+                borderRadius: BorderRadius.circular(4.0)),
           ),
           Row(
             children: <Widget>[
@@ -93,110 +116,116 @@ class _DatailState extends State<Datail> {
           ),
         ],
       ),
-      decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
     );
   }
 
-
   Widget saveButton() {
-    if(isEditing) {
+    if (isEditing) {
       return FloatingActionButton(
         child: Icon(Icons.save),
-        onPressed: () async{
-          if([nameController.text.trim(), descriptionController.text.trim(), expressionController.text.trim()].contains("")) {
+        onPressed: () async {
+          if ([
+            nameController.text.trim(),
+            descriptionController.text.trim(),
+            expressionController.text.trim()
+          ].contains("")) {
             await showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("無効な値が入力されました"),
-                  content: Text("パラメーターは一つも空白が無いようにしてください"),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text("ok"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              }
-            );
-          }else{
-            newFomulaData = Fomula(
-              name:       nameController.text,
-              description:   descriptionController.text,
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text("無効な値が入力されました"),
+                    content: Text("パラメーターは一つも空白が無いようにしてください"),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("ok"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                });
+          } else {
+            newformulaData = formula(
+              name: nameController.text,
+              description: descriptionController.text,
               expression: expressionController.text,
             );
-            parentSubject.fomulaList[childIndex] = newFomulaData;
+            parentSubject.formulaList[childIndex] = newformulaData;
             subjectList = await SubjectPrefarence.getSubjectList();
             subjectList[parentIndex] = parentSubject;
             await SubjectPrefarence.saveSubjectList(subjectList);
             setState(() {
-              fomula = parentSubject.fomulaList[childIndex];
+              formula = parentSubject.formulaList[childIndex];
               isEditing = false;
             });
           }
         },
       );
-    }else return FloatingActionButton(onPressed: () {},);
+    } else
+      return FloatingActionButton(
+        onPressed: () {},
+      );
   }
 
   Widget mainWidget() {
-    if(isEditing) {
-      nameController       = TextEditingController(text: fomula.name);
-      descriptionController   = TextEditingController(text: fomula.description);
-      expressionController = TextEditingController(text: fomula.expression);
+    if (isEditing) {
+      nameController = TextEditingController(text: formula.name);
+      descriptionController = TextEditingController(text: formula.description);
+      expressionController = TextEditingController(text: formula.expression);
       return ListView(
         children: <Widget>[
-          inputFomulaDataForm(
+          inputformulaDataForm(
             induction: "1. 公式の名前を入力してください",
             controller: nameController,
-            hintText: "Input Fomula Name",
+            hintText: "Input formula Name",
           ),
-          inputFomulaDataForm(
+          inputformulaDataForm(
             induction: "2. 公式の式部分を入力してください",
             controller: expressionController,
-            hintText: "Input Fomula Part of Expression",
+            hintText: "Input formula Part of Expression",
           ),
-          inputFomulaDataForm(
-            height: 300,
-            induction: "3. 公式の説明文や定義を入力してください",
-            controller: descriptionController,
-            hintText: "Input Fomula Description"
-          ),
+          inputformulaDataForm(
+              height: 300,
+              induction: "3. 公式の説明文や定義を入力してください",
+              controller: descriptionController,
+              hintText: "Input formula Description"),
         ],
       );
-    }else{
+    } else {
       return ListView(
         children: <Widget>[
-          fomulaDataDisplayer(
+          formulaDataDisplayer(
             height: 200,
             fontSize: 22,
             title: "Expression",
-            message: fomula.expression,
+            message: formula.expression,
           ),
-          fomulaDataDisplayer(
+          formulaDataDisplayer(
             height: 300,
             fontSize: 16,
             title: "Description",
-            message: fomula.description,
+            message: formula.description,
           ),
-          fomulaDataDisplayer(
+          formulaDataDisplayer(
             height: 250,
             fontSize: 16,
             title: "Tags",
-            message: fomula.tagList.list.join(" "),
+            message: formula.tagList.list.join(" "),
           ),
         ],
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Displaying ${fomula.name} Detail"),
+        title: Text("Displaying ${formula.name} Detail"),
         actions: <Widget>[
           IconButton(
             onPressed: () {

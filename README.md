@@ -1,6 +1,6 @@
-# formula bank in flutter
+# formula_bank
 
-My First Flutter project.
+A new Flutter project.
 
 ## Getting Started
 
