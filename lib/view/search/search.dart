@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../home/home.dart';
 import '../datail/detail.dart';
 import '../widgets/drawer.dart';
-import '../../datamanageclass/subject.dart';
-import '../../datamanageclass/fomula.dart';
+import '../../data_manager_class/subject.dart';
+import '../../data_manager_class/fomula.dart';
 
 class Search extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
 }
 class _SearchState extends State<Search> {
-  List<Subject> subjectList;
-  List<String> searchKeys;
+  late List<Subject> subjectList;
+  late List<String> searchKeys;
   List result = [];
 
   List search() {
@@ -53,7 +54,7 @@ class _SearchState extends State<Search> {
               ),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (BuildContext context) => Datail(/*TODO FomulaにparentSubjectを実装*/))
+                  MaterialPageRoute<Widget>(builder: (BuildContext context) => Home())
                 );
               },
             ),

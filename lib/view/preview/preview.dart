@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
-import './_addfomula.dart';
+import '../input_fomula_data/input_fomula_data.dart';
 import '../datail/detail.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/drawer.dart';
-import '../../datamanageclass/subject.dart';
-import '../../datamanageclass/fomula.dart';
+
+import '../../data_manager_class/subject.dart';
+import '../../data_manager_class/fomula.dart';
 
 class Preview extends StatefulWidget {
   final Subject subject;
-  final List fomulaList;
   final int parentIndex;
+  late final List fomulaList;
 
-  Preview({this.subject, this.fomulaList, this.parentIndex});
+  Preview({required this.subject, required this.parentIndex}) {
+    this.fomulaList = subject.fomulaList;
+  }
 
   @override
   _PreviewState createState() => _PreviewState(subject, fomulaList, parentIndex);
@@ -49,7 +52,7 @@ class _PreviewState extends State<Preview> {
               ),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (BuildContext context) => Datail(
+                  MaterialPageRoute<Widget>(builder: (BuildContext context) => Datail(
                     childIndex: index,
                     parentIndex: parentIndex,
                     parentSubject: subject,
@@ -60,7 +63,7 @@ class _PreviewState extends State<Preview> {
               onLongPress: () async{
                 isDelete = await confirmDeleteFomulaDialog(context);
                 if(isDelete && !fomula.liked) {
-                  List subjectList = await SubjectPrefarence.getSubjectList();
+                  List<Subject> subjectList = await SubjectPrefarence.getSubjectList();
                   setState(() {
                     subject.fomulaList.removeAt(index);
                   });
@@ -88,14 +91,14 @@ class _PreviewState extends State<Preview> {
             onPressed: () async{
               Fomula newFomula = await Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (BuildContext context) => AddFomulaPage(index: parentIndex)
+                  builder: (BuildContext context) => AddFomulaPage(subjectIndex: parentIndex)
                 ),
               );
               if(newFomula!=null) {
                 setState(() {
                   subject.fomulaList.add(newFomula);
                 });
-                List subjectList = await SubjectPrefarence.getSubjectList();
+                List<Subject> subjectList = await SubjectPrefarence.getSubjectList();
                 subjectList[parentIndex] = subject;
                 SubjectPrefarence.saveSubjectList(subjectList);
               }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../datamanageclass/subject.dart';
+import '../../data_manager_class/subject.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -8,6 +8,6 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    return null;
+    return Scaffold();
   }
 }

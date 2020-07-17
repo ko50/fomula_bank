@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import '../preview/preview.dart';
 import '../widgets/drawer.dart';
 import '../widgets/dialogs.dart';
-import '../../datamanageclass/subject.dart';
+import '../../data_manager_class/subject.dart';
 
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 class _HomeState extends State<Home> {
-  List<Subject> subjectList;
-  String newSubjectName;
+  late List<Subject> subjectList;
+  late String newSubjectName;
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +91,8 @@ class _HomeState extends State<Home> {
                             onTap: () {
                               List fomulaList = subject.fomulaList;
                               Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) => Preview(subject: subject, fomulaList: fomulaList, parentIndex: index)
+                                MaterialPageRoute<Widget>(
+                                  builder: (BuildContext context) => Preview(subject: subject, parentIndex: index)
                                 ),
                               );
                             },
